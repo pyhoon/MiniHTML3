@@ -5,7 +5,7 @@ Type=Class
 Version=10.5
 @EndOfDesignText@
 'MiniHtml
-'Version: 2.41
+'Version: 3.00
 Sub Class_Globals
 	Private mIndents As Int
 	Private mIndentString As String
@@ -261,9 +261,9 @@ Public Sub setParent (ParentTag As MiniHtml)
 End Sub
 
 ' (deprecated) Use ChildByIndex
-Public Sub Child (tagIndex As Int) As MiniHtml
-	Return ChildByIndex(tagIndex)
-End Sub
+'Public Sub Child (tagIndex As Int) As MiniHtml
+'	Return ChildByIndex(tagIndex)
+'End Sub
 
 ' Get child matches tag name using deep search
 'Public Sub Child (value As String) As MiniHtml
@@ -568,6 +568,183 @@ Public Sub Parse (HtmlText As String) As MiniHtml
 	Return Create(mNoTag)
 End Sub
 
+' Parse a JSON string into a MiniHtml tree.
+' Shorthand format: {"tagname": {"class": "...", "text": "...", "children": [...]}}
+' Or: {"tagname": "inner text"}
+' Or an array: [{"div": ...}, {"span": ...}]
+Public Sub FromJson (JsonStr As String) As MiniHtml
+	Dim parser As JSONParser
+	parser.Initialize(JsonStr)
+	Dim obj As Object = parser.NextValue
+	Return AnyToMiniHtml(obj)
+End Sub
+
+' Parse a pre-parsed Map into a MiniHtml tree (shorthand format: {"tagname": {properties}})
+Public Sub FromMap (m As Map) As MiniHtml
+	Return ShorthandToMiniHtml(m)
+End Sub
+
+' Convert a JSON value (Map or List) to MiniHtml
+Private Sub AnyToMiniHtml (obj As Object) As MiniHtml
+	If obj Is Map Then
+		Return ShorthandToMiniHtml(obj)
+	Else If obj Is List Then
+		Dim list As List = obj
+		Dim root As MiniHtml
+		root.Initialize("")
+		For Each item As Object In list
+			If item Is Map Then
+				ShorthandToMiniHtml(item).up(root)
+			End If
+		Next
+		Return root
+	End If
+	Dim empty As MiniHtml
+	empty.Initialize("")
+	Return empty
+End Sub
+
+' Convert a shorthand map {"tagname": {properties}} or {"tagname": "text"}
+Private Sub ShorthandToMiniHtml (m As Map) As MiniHtml
+	Dim tagName As String = ""
+	Dim props As Object = Null
+	For Each key As String In m.Keys
+		tagName = key
+		props = m.Get(key)
+		Exit
+	Next
+	Dim el As MiniHtml
+	el.Initialize(tagName)
+	If props Is Map Then
+		Dim propMap As Map = props
+		For Each key As String In propMap.Keys
+			Dim value As Object = propMap.Get(key)
+			Select key.ToLowerCase
+				Case "class"
+					el.cls(value)
+				Case "style"
+					el.sty(value)
+				Case "text"
+					el.text(value)
+				Case "attrs"
+					Dim attrs As Map = value
+					el.attr2(attrs)
+				Case "children"
+					Dim children As List = value
+					For Each child As Object In children
+						If child Is Map Then
+							ShorthandToMiniHtml(child).up(el)
+						Else If child Is String Then
+							el.text(child)
+						End If
+					Next
+				Case "mode"
+					el.setMode(value)
+				Case "flat"
+					el.setFlat(value)
+				Case "indentation"
+					el.setIndentation(value)
+				Case "formatattributes"
+					el.setFormatAttributes(value)
+				Case "id"
+					el.setId(value)
+				Case "required"
+					If value = True Then el.required
+				Case "disabled"
+					If value = True Then el.disabled
+				Case "checked"
+					If value = True Then el.checked
+				Case "selected"
+					If value = True Then el.selected
+				Case "hidden"
+					If value = True Then el.hidden
+				Case "readonly"
+					If value = True Then el.readonly
+				Case Else
+					el.attr(key, value)
+			End Select
+		Next
+	Else If props Is String Then
+		el.text(props)
+	End If
+	Return el
+End Sub
+
+' Convert this MiniHtml tree to a Map in shorthand format {"tagname": {properties}}
+Public Sub ToMap As Map
+	Dim props As Map
+	props.Initialize
+	
+	If mClasses.Size > 0 Then props.Put("class", ClassesAsString)
+	If mStyles.Size > 0 Then props.Put("style", StylesAsString)
+	
+	If mFlat Then props.Put("flat", True)
+	If mIndentation Then props.Put("indentation", True)
+	If mFormatAttributes Then props.Put("formatattributes", True)
+	
+	Dim boolAttrs As List = Array As String("required", "disabled", "checked", "selected", "hidden", "readonly")
+	Dim rest As Map
+	rest.Initialize
+	For Each key As String In mAttributes.Keys
+		If key = "class" Or key = "style" Then Continue
+		If key = "id" Then
+			props.Put("id", mAttributes.Get(key))
+			Continue
+		End If
+		If boolAttrs.IndexOf(key) >= 0 Then
+			props.Put(key, True)
+			Continue
+		End If
+		rest.Put(key, mAttributes.Get(key))
+	Next
+	If rest.Size > 0 Then props.Put("attrs", rest)
+	
+	Dim children As List
+	children.Initialize
+	Dim textCount As Int = 0
+	Dim tagCount As Int = 0
+	
+	For Each child As Object In mChildren
+		If child Is MiniHtml Then
+			tagCount = tagCount + 1
+		Else If child Is String Then
+			textCount = textCount + 1
+		End If
+	Next
+	
+	If textCount = 1 And tagCount = 0 Then
+		For Each child As Object In mChildren
+			If child Is String Then
+				props.Put("text", child)
+				Exit
+			End If
+		Next
+	Else If textCount > 0 Or tagCount > 0 Then
+		For Each child As Object In mChildren
+			If child Is MiniHtml Then
+				Dim childMap As MiniHtml = child
+				children.Add(childMap.ToMap)
+			Else If child Is String Then
+				children.Add(child)
+			End If
+		Next
+		props.Put("children", children)
+	End If
+	
+	Dim result As Map
+	result.Initialize
+	result.Put(mName, props)
+	Return result
+End Sub
+
+' Convert this MiniHtml tree to a JSON string
+Public Sub ToJson As String
+	Dim map1 As Map = ToMap
+	Dim jg As JSONGenerator
+	jg.Initialize(map1)
+	Return jg.ToString
+End Sub
+
 ' Wrap script inside script tags
 'output: <code><script>value</script></code>
 Public Sub script (value As String) As MiniHtml
@@ -703,9 +880,9 @@ Public Sub Append (Value As String)
 End Sub
 
 ' (deprecated) Use Append
-Public Sub Write (Value As String)
-	mBuilder.Append(Value)
-End Sub
+'Public Sub Write (Value As String)
+'	mBuilder.Append(Value)
+'End Sub
 
 Public Sub ToString As String
 	Return mBuilder.ToString
