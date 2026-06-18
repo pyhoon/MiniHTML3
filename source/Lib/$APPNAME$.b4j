@@ -1,0 +1,35 @@
+﻿AppType=StandardJava
+Build1=Default,b4j.example
+Group=App
+Library1=jcore
+Module1=MyLibrary
+NumberOfFiles=0
+NumberOfLibraries=1
+NumberOfModules=1
+Version=10.5
+@EndOfDesignText@
+#Region Project Attributes 
+	#CommandLineArgs:
+	#MergeLibraries: True 
+#End Region
+#Region Additional Jars
+'#AdditionalJar: 
+#End Region
+#Region Macros
+'Please remove unused files before creating B4X Lib
+#Macro: Title, Update Manifest, ide://run?File=%ADDITIONAL%\manifest-writer.jar&Args=%PROJECT%&Args=%PROJECT%&Args=Author&Args=Your+Name&Args=Version&Args=1.00
+#Macro: Title, Create B4X Lib, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=..\release\%PROJECT_NAME%.b4xlib&Args=Snippets&Args=MyLibrary.bas&Args=CustomClass.b4x_excluded&Args=manifest.txt&Args=LICENSE
+#Macro: Title, Release Folder, ide://run?File=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%\..\release
+#Macro: Title, Copy to B4X AddLibs, ide://run?File=%COMSPEC%&Args=/c&Args=copy&Args=%PROJECT%\..\release\%PROJECT_NAME%.b4xlib&Args=%ADDITIONAL%\..\B4X
+#End Region
+Sub Process_Globals
+	Private obj1 As MyLibrary
+End Sub
+
+'Download: <link>manifest-writer.jar|https://github.com/pyhoon/manifest-writer/releases/download/v2.20/manifest-writer.jar </link>
+'and save to B4J Additional Libraries folder
+Sub AppStart (Args() As String)
+	obj1.Initialize
+	obj1.Name = "My library works!"
+	Log(obj1.Name)
+End Sub

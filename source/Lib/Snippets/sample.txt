@@ -1,0 +1,13 @@
+	Private mName As String
+End Sub
+
+Public Sub Initialize
+
+End Sub
+
+Public Sub getName As String
+	Return mName
+End Sub
+
+Public Sub setName (Name As String)
+	mName = Name

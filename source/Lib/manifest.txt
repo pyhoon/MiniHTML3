@@ -1,0 +1,3 @@
+Version=1.00
+Author=Your Name
+CustomClassTemplates=Custom Class|CustomClass
