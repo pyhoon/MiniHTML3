@@ -311,6 +311,7 @@ Log(el.ToJson) ' {"button": {"text": "Submit", "required": true}}
 ## Dependencies
 
 - [B4XCollections](https://www.b4x.com/android/forum/threads/b4x-b4xcollections.101115/)
+- [JSON](https://www.b4x.com/android/forum/threads/convert-collections-to-json-and-vice-versa.132678/)
 
 ## License
 
@@ -318,5 +319,5 @@ MIT License. See [LICENSE](LICENSE).
 
 ## Links
 
-- [B4X Forum](https://www.b4x.com/android/forum/threads/b4x-web-minihtml2.170180/)
+- [B4X Forum](https://www.b4x.com/android/forum/threads/b4x-minihtml3.171326/)
 - [GitHub](https://github.com/pyhoon/MiniHTML3)
