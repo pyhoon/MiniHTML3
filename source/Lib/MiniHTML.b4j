@@ -22,16 +22,18 @@ Version=10.5
 #MergeLibraries: True
 #End Region
 #Region Macros
-#Macro: Title, Export State, ide://run?File=%B4X%\CodeBundle.jar&Args=%STATE1%&autosave=True
+'#Macro: Title, Export State, ide://run?File=%B4X%\CodeBundle.jar&Args=%STATE1%&autosave=True
 'Step 1
 #Macro: Title, Update Manifest, ide://run?File=%ADDITIONAL%\manifest-writer.jar&Args=%PROJECT%&Args=%PROJECT%&Args=Author&Args=Aeric+Poon&Args=Version&Args=3.00
 'Step 2
-#Macro: Title, Class Templates, ide://run?File=%PROJECT%\create_excluded.bat&Args=..\Helper.bas&Args=..\Handler.bas&Args=..\Model.bas&Args=..\View.bas
+#Macro: Title, Create Template, ide://run?File=%PROJECT%\create_excluded.bat&Args=..\Helper.bas
 'Step 3
-#Macro: Title, Create B4X Lib, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=..\..\release\%PROJECT_NAME%.b4xlib&Args=Snippets&Args=MiniHtml.bas&Args=MiniHtmlParser.bas&Args=Helper.b4x_excluded&Args=Handler.b4x_excluded&Args=Model.b4x_excluded&Args=View.b4x_excluded&Args=manifest.txt&Args=LICENSE
+#Macro: Title, Create Snippets, ide://run?File=%PROJECT%\create_snippets.bat&Args=..\Handler.bas&Args=..\Model.bas&Args=..\View.bas
 'Step 4
-#Macro: Title, Release Folder, ide://run?File=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%\..\..\release
+#Macro: Title, Create B4X Lib, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=..\..\release\%PROJECT_NAME%.b4xlib&Args=Snippets&Args=MiniHtml.bas&Args=MiniHtmlParser.bas&Args=Helper.b4x_excluded&Args=manifest.txt&Args=LICENSE
 'Step 5
+#Macro: Title, Release Folder, ide://run?File=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%\..\..\release
+'Step 6
 #Macro: Title, Copy to B4X AddLibs, ide://run?File=%COMSPEC%&Args=/c&Args=copy&Args=%PROJECT%\..\..\release\%PROJECT_NAME%.b4xlib&Args=%ADDITIONAL%\..\B4X
 
 #End Region
