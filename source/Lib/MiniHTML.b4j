@@ -1,14 +1,20 @@
 ﻿AppType=StandardJava
 Build1=Default,b4j.example
+File1=Handler Class.bas
+File2=Model Class.bas
+File3=View Class.bas
+FileGroup1=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
 Group=App
 Library1=endsmeet
 Library2=jcore
 Library3=minijs
-Module1=Helper_Module
+Module1=Helper
 Module2=Index
 Module3=MiniHtml
 Module4=MiniHtmlParser
-NumberOfFiles=0
+NumberOfFiles=3
 NumberOfLibraries=3
 NumberOfModules=4
 Version=10.5
@@ -26,9 +32,9 @@ Version=10.5
 'Step 1
 #Macro: Title, Update Manifest, ide://run?File=%ADDITIONAL%\manifest-writer.jar&Args=%PROJECT%&Args=%PROJECT%&Args=Author&Args=Aeric+Poon&Args=Version&Args=3.00
 'Step 2
-'#Macro: Title, Create Template, ide://run?File=%PROJECT%\create_excluded.bat&Args=..\Helper_Module.bas
+'#Macro: Title, Create Template, ide://run?File=%PROJECT%\create_excluded.bat&Args=..\Helper.bas
 'Step 3
-#Macro: Title, Create Snippets, ide://run?File=%PROJECT%\create_snippets_with_checking.bat&Args=..\Handler+Class.bas&Args=..\Model+Class.bas&Args=..\View+Class.bas&Args=..\Helper_Module.bas
+#Macro: Title, Create Snippets, ide://run?File=%PROJECT%\create_snippets_with_checking.bat&Args=..\Handler+Class.bas&Args=..\Model+Class.bas&Args=..\View+Class.bas&Args=..\Helper.bas
 'Step 4
 #Macro: Title, Create B4X Lib, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=..\..\release\%PROJECT_NAME%.b4xlib&Args=Snippets&Args=MiniHtml.bas&Args=MiniHtmlParser.bas&Args=manifest.txt&Args=LICENSE
 'Step 5
