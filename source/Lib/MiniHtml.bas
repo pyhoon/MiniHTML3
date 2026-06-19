@@ -573,9 +573,11 @@ End Sub
 ' Or: {"tagname": "inner text"}
 ' Or an array: [{"div": ...}, {"span": ...}]
 Public Sub FromJson (JsonStr As String) As MiniHtml
-	Dim parser As JSONParser
-	parser.Initialize(JsonStr)
-	Dim obj As Object = parser.NextValue
+	'Dim parser As JSONParser
+	'parser.Initialize(JsonStr)
+	'Dim obj As Object = parser.NextValue
+	Dim obj As Object = IIf(JsonStr.StartsWith("["), JsonStr.As(JSON).ToList, JsonStr.As(JSON).ToMap)
+	'Log(GetType(obj))
 	Return AnyToMiniHtml(obj)
 End Sub
 
