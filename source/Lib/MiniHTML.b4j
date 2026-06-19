@@ -10,13 +10,14 @@ Group=App
 Library1=endsmeet
 Library2=jcore
 Library3=minijs
-Module1=Helper
-Module2=Index
-Module3=MiniHtml
-Module4=MiniHtmlParser
+Module1=Cache
+Module2=Helper
+Module3=Index
+Module4=MiniHtml
+Module5=MiniHtmlParser
 NumberOfFiles=3
 NumberOfLibraries=3
-NumberOfModules=4
+NumberOfModules=5
 Version=10.5
 @EndOfDesignText@
 'Product: MiniHtml
@@ -34,7 +35,7 @@ Version=10.5
 'Step 2
 '#Macro: Title, Create Template, ide://run?File=%PROJECT%\create_excluded.bat&Args=..\Helper.bas
 'Step 3
-#Macro: Title, Create Snippets, ide://run?File=%PROJECT%\create_snippets_with_checking.bat&Args=..\Handler+Class.bas&Args=..\Model+Class.bas&Args=..\View+Class.bas&Args=..\Helper.bas
+#Macro: Title, Create Snippets, ide://run?File=%PROJECT%\create_snippets_with_checking.bat&Args=..\Handler+Class.bas&Args=..\Model+Class.bas&Args=..\View+Class.bas&Args=..\Helper.bas&Args=..\Cache.bas
 'Step 4
 #Macro: Title, Create B4X Lib, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=..\..\release\%PROJECT_NAME%.b4xlib&Args=Snippets&Args=MiniHtml.bas&Args=MiniHtmlParser.bas&Args=manifest.txt&Args=LICENSE
 'Step 5
