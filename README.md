@@ -31,7 +31,7 @@ MiniHTML3/
 │   ├── MiniHtmlParser.bas  # HTML parser (credits: Erel)
 │   ├── MH.bas              # Static helper — factory methods for common tags
 │   ├── Index.bas           # Demo handler (B4J servlet)
-│   ├── MiniHTML3.b4j       # B4J project file
+│   ├── MiniHTML.b4j        # B4J project file
 │   ├── manifest.txt        # Library manifest
 │   ├── libs.json           # External library dependencies (EndsMeet)
 │   ├── Files/config.example
