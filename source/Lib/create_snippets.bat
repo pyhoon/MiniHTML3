@@ -26,7 +26,7 @@ echo    %INPUT%
 echo Output:
 echo    %OUTPUT%
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$lines = @(); $found=$false; Get-Content '%INPUT%' | ForEach-Object { if($found){ $lines += $_ } elseif($_ -match 'Sub Class_Globals'){ $found=$true } }; if($lines.Count -gt 0 -and $lines[-1].Trim() -eq 'End Sub'){ $lines = $lines[0..($lines.Count-2)] }; $lines | Set-Content '%OUTPUT%'"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$lines = @(); $found=$false; Get-Content '%INPUT%' | ForEach-Object { if($found){ $lines += $_ } elseif($_ -match 'Sub (Class|Process)_Globals'){ $found=$true } }; if($lines.Count -gt 0 -and $lines[-1].Trim() -eq 'End Sub'){ $lines = $lines[0..($lines.Count-2)] }; $lines | Set-Content '%OUTPUT%'"
 
 shift
 goto nextfile
