@@ -368,6 +368,30 @@ Public Sub ContainerModal As MiniHtml
 	Return modal1
 End Sub
 
+Public Sub ContainerModalWithButton (TitleText As String, ParagraphText As String, ButtonText As String) As MiniHtml
+    Dim div1 As MiniHtml = Div
+    div1.cls("modal-dialog modal-lg modal-dialog-centered")
+    Dim div2 As MiniHtml = Div.up(div1)
+    div2.cls("modal-content")
+    Dim div3 As MiniHtml = Div.up(div2)
+    div3.cls("modal-header")
+    Dim h51 As MiniHtml = H5.up(div3)
+    h51.cls("modal-title")
+    h51.text(TitleText)
+    Dim div4 As MiniHtml = Div.up(div2)
+    div4.cls("modal-body")
+    Dim p1 As MiniHtml = P.up(div4)
+    p1.text(ParagraphText)
+    Dim div5 As MiniHtml = Div.up(div2)
+    div5.cls("modal-footer")
+    Dim button1 As MiniHtml = Button.up(div5)
+    button1.attr("type", "button")
+    button1.cls("btn btn-secondary text-uppercase")
+    button1.attr("data-bs-dismiss", "modal")
+    button1.text(ButtonText)
+    Return div1
+End Sub
+
 Public Sub ContainerToast As MiniHtml
 	Dim div1 As MiniHtml = Div
 	div1.cls("position-fixed end-0 p-3")
