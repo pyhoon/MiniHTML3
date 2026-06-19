@@ -26,7 +26,7 @@ Sub Handle (req As ServletRequest, resp As ServletResponse)
 		End If
 	Else If path = "/modal" Then
 		If Method = "POST" Then
-			Response.Write(GenerateModal)
+			Response.Write(GenerateModal.build)
 			Return
 		End If
 		Response.SendError(405, "<h1>405 Method Not Allowed</h1>")
@@ -92,26 +92,120 @@ Public Sub GeneratePage As String
     Return html1.build
 End Sub
 
-Sub GenerateModal As String
-    Dim div1 As MiniHtml = Helper.Div
-    div1.cls("modal-dialog modal-lg modal-dialog-centered")
-    Dim div2 As MiniHtml = Helper.Div.up(div1)
-    div2.cls("modal-content")
-    Dim div3 As MiniHtml = Helper.Div.up(div2)
-    div3.cls("modal-header")
-    Dim h51 As MiniHtml = Helper.H5.up(div3)
-    h51.cls("modal-title")
-    h51.text("Modal title")
-    Dim div4 As MiniHtml = Helper.Div.up(div2)
-    div4.cls("modal-body")
-    Dim p1 As MiniHtml = Helper.P.up(div4)
-    p1.text("Modal body text goes here.")
-    Dim div5 As MiniHtml = Helper.Div.up(div2)
-    div5.cls("modal-footer")
-    Dim button1 As MiniHtml = Helper.Button.up(div5)
-    button1.attr("type", "button")
-    button1.cls("btn btn-secondary text-uppercase")
-    button1.attr("data-bs-dismiss", "modal")
-    button1.text("Close")
-    Return div1.Build
+'Sub GenerateModal As String
+'    Dim div1 As MiniHtml = Helper.Div
+'    div1.cls("modal-dialog modal-lg modal-dialog-centered")
+'    Dim div2 As MiniHtml = Helper.Div.up(div1)
+'    div2.cls("modal-content")
+'    Dim div3 As MiniHtml = Helper.Div.up(div2)
+'    div3.cls("modal-header")
+'    Dim h51 As MiniHtml = Helper.H5.up(div3)
+'    h51.cls("modal-title")
+'    h51.text("Modal title")
+'    Dim div4 As MiniHtml = Helper.Div.up(div2)
+'    div4.cls("modal-body")
+'    Dim p1 As MiniHtml = Helper.P.up(div4)
+'    p1.text("Modal body text goes here.")
+'    Dim div5 As MiniHtml = Helper.Div.up(div2)
+'    div5.cls("modal-footer")
+'    Dim button1 As MiniHtml = Helper.Button.up(div5)
+'    button1.attr("type", "button")
+'    button1.cls("btn btn-secondary text-uppercase")
+'    button1.attr("data-bs-dismiss", "modal")
+'    button1.text("Close")
+'    Return div1.Build
+'End Sub
+
+' Test Create MiniHTML from Map
+'Private Sub GenerateModal As MiniHtml
+'	Dim button1 As Map = CreateMap("button": CreateMap("class": "btn btn-secondary text-uppercase", "attrs": CreateMap("type": "button", "data-bs-dismiss": "modal"), "text": "Close"))
+'	Dim div5 As Map = CreateMap("div": CreateMap("class": "modal-footer", "children": CreateList(Array(button1))))
+'	Dim p1 As Map = CreateMap("p": CreateMap("text": "Modal body text goes here."))
+'	Dim div4 As Map = CreateMap("div": CreateMap("class": "modal-body", "children": CreateList(Array(p1))))
+'	Dim h5 As Map = CreateMap("h5": CreateMap("class": "modal-title", "text": "Modal title"))
+'	Dim div3 As Map = CreateMap("div": CreateMap("class": "modal-header", "children": CreateList(Array(h5))))
+'	Dim div2 As Map = CreateMap("div": CreateMap("class": "modal-content", "children": CreateList(Array(div3, div4, div5))))
+'	Dim div1 As Map = CreateMap("div": CreateMap("class": "modal-dialog modal-lg modal-dialog-centered", "children": CreateList(Array(div2))))
+'	Return Helper.CreateTag("").FromMap(div1)
+'End Sub
+
+Private Sub CreateList (Obj() As Object) As List
+	Return B4XCollections.CreateList(Obj)
 End Sub
+
+' Test Create MiniHTML from Json
+Private Sub GenerateModal As MiniHtml
+	'Dim button1 As Map = CreateMap("button": CreateMap("class": "btn btn-secondary text-uppercase", "attrs": CreateMap("type": "button", "data-bs-dismiss": "modal"), "text": "Close"))
+	'Dim div5 As Map = CreateMap("div": CreateMap("class": "modal-footer", "children": CreateList(Array(button1))))
+	'Dim p1 As Map = CreateMap("p": CreateMap("text": "Modal body text goes here."))
+	'Dim div4 As Map = CreateMap("div": CreateMap("class": "modal-body", "children": CreateList(Array(p1))))
+	'Dim h5 As Map = CreateMap("h5": CreateMap("class": "modal-title", "text": "Modal title"))
+	'Dim div3 As Map = CreateMap("div": CreateMap("class": "modal-header", "children": CreateList(Array(h5))))
+	'Dim div2 As Map = CreateMap("div": CreateMap("class": "modal-content", "children": CreateList(Array(div3, div4, div5))))
+	'Dim div1 As Map = CreateMap("div": CreateMap("class": "modal-dialog modal-lg modal-dialog-centered", "children": CreateList(Array(div2))))
+	'Dim json As String = Helper.CreateTag("").FromMap(div1).ToJson
+	
+'	Dim json As String = $"{"div":{"class":"modal-dialog modal-lg modal-dialog-centered","children":[{"div":{"class":"modal-content","children":[{"div":{"class":"modal-header","children":[{"h5":{"class":"modal-title","text":"Modal title"}}]}},{"div":{"class":"modal-body","children":[{"p":{"text":"Modal body text goes here."}}]}},{"div":{"class":"modal-footer","children":[{"button":{"class":"btn btn-secondary text-uppercase","attrs":{"type":"button","data-bs-dismiss":"modal"},"text":"Close"}}]}}]}}]}}"$
+	'Log(json)
+	Dim json As String = $"{
+    "div": {
+        "class": "modal-dialog modal-lg modal-dialog-centered",
+        "children": [
+            {
+                "div": {
+                    "class": "modal-content",
+                    "children": [
+                        {
+                            "div": {
+                                "class": "modal-header",
+                                "children": [
+                                    {
+                                        "h5": {
+                                            "class": "modal-title",
+                                            "text": "Modal title"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "div": {
+                                "class": "modal-body",
+                                "children": [
+                                    {
+                                        "p": {
+                                            "text": "Modal body text goes here."
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "div": {
+                                "class": "modal-footer",
+                                "children": [
+                                    {
+                                        "button": {
+                                            "class": "btn btn-secondary text-uppercase",
+                                            "attrs": {
+                                                "type": "button",
+                                                "data-bs-dismiss": "modal"
+                                            },
+                                            "text": "Close"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}"$
+	Return Helper.CreateTag("").FromJson(json)
+End Sub
+
+'Sub GenerateModal As MiniHtml 'ignore
+'	Return Helper.ContainerModalWithButton("Modal title", "Modal body text goes here.", "Close")
+'End Sub
