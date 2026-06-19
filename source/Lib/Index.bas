@@ -129,7 +129,7 @@ End Sub
 '	Return Helper.CreateTag("").FromMap(div1)
 'End Sub
 
-Private Sub CreateList (Obj() As Object) As List
+Private Sub CreateList (Obj() As Object) As List 'ignore
 	Return B4XCollections.CreateList(Obj)
 End Sub
 
