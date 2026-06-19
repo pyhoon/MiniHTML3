@@ -35,7 +35,7 @@ MiniHTML3/
 │   ├── manifest.txt        # Library manifest
 │   ├── libs.json           # External library dependencies (EndsMeet)
 │   ├── Files/config.example
-│   └── Snippets/           # Code templates: Handler, View, Model, Helper
+│   └── Snippets/           # Code templates: Handler Class, View Class, Model Class, Helper, Cache
 ├── release/
 │   └── MiniHtml.b4xlib     # Compiled library
 ├── LICENSE                 # MIT License
@@ -44,7 +44,7 @@ MiniHTML3/
 
 ## Installation
 
-1. Copy `release/MiniHtml.b4xlib` to your B4X additional libraries folder
+1. Copy `release/MiniHTML.b4xlib` to your B4X additional libraries folder
 2. Add the library reference in your B4J/B4A/B4i project
 
 ## Quick Start
