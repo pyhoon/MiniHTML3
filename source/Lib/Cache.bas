@@ -5,8 +5,8 @@ Type=StaticCode
 Version=10.5
 @EndOfDesignText@
 Sub Process_Globals
-'MiniHTML Cache Module
-	'Version 3.00
+'MiniHTML Cache
+'Version 3.03
 End Sub
 
 Private Sub EmptyTag As MiniHtml
