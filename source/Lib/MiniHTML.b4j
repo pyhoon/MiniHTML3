@@ -34,7 +34,7 @@ Version=10.5
 'Step 2
 #Macro: Title, Create Snippets, ide://run?File=%PROJECT%\create_snippets.bat&Args=..\Cache.bas&Args=..\Helper.bas&Args=..\Handler.bas&Args=..\Model.bas&Args=..\View.bas
 'Step 3
-#Macro: Title, Create B4X Lib, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=..\..\release\%PROJECT_NAME%.b4xlib&Args=Snippets&Args=MiniHtml.bas&Args=MiniHtmlParser.bas&Args=Helper.b4x_excluded&Args=manifest.txt&Args=LICENSE
+#Macro: Title, Create B4X Lib, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=..\..\release\%PROJECT_NAME%.b4xlib&Args=Snippets&Args=MiniHtml.bas&Args=MiniHtmlParser.bas&Args=manifest.txt&Args=LICENSE
 'Step 4
 #Macro: Title, Release Folder, ide://run?File=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%\..\..\release
 'Step 5
