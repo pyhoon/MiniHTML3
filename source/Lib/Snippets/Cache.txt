@@ -1,5 +1,5 @@
-'MiniHTML Cache Module
-	'Version 3.00
+'MiniHTML Cache
+'Version 3.03
 End Sub
 
 Private Sub EmptyTag As MiniHtml
