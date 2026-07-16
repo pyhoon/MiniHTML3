@@ -27,17 +27,30 @@ MiniHTML3 lets you construct HTML documents programmatically in B4X using an obj
 ```
 MiniHTML3/
 ├── source/
-│   ├── MiniHtml.bas        # Core class — HTML tag builder
-│   ├── MiniHtmlParser.bas  # HTML parser (credits: Erel)
-│   ├── MH.bas              # Static helper — factory methods for common tags
-│   ├── Index.bas           # Demo handler (B4J servlet)
-│   ├── MiniHTML.b4j        # B4J project file
-│   ├── manifest.txt        # Library manifest
-│   ├── libs.json           # External library dependencies (EndsMeet)
-│   ├── Files/config.example
-│   └── Snippets/           # Code templates: Handler Class, View Class, Model Class, Helper, Cache
+│   ├── Lib/                  # Library source code
+│   │   ├── MiniHtml.bas         # Core class — HTML tag builder
+│   │   ├── MiniHtmlParser.bas   # HTML parser (credits: Erel)
+│   │   ├── MH.bas               # Static tag factories
+│   │   ├── Helper.bas           # Higher-level UI helpers & components
+│   │   ├── Cache.bas            # Page & component caching utilities
+│   │   ├── Index.bas            # Demo handler (B4J servlet)
+│   │   ├── MiniHTML.b4j         # B4J project file
+│   │   ├── manifest.txt         # Library manifest
+│   │   ├── libs.json            # External library dependencies (EndsMeet)
+│   │   ├── Snippets/            # Code templates: Handler, View, Model, Helper, CurrentDateTime
+│   │   └── Files/               # Config & asset files
+│   ├── B4X/                  # B4X multi-platform app projects
+│   │   ├── B4A/                 # Android app project
+│   │   ├── B4i/                 # iOS app project
+│   │   ├── B4J/                 # Desktop app project
+│   │   ├── server/              # Server-side B4J project
+│   │   ├── B4XMainPage.bas      # Shared main page
+│   │   └── Shared Files/        # Cross-platform shared assets
+│   └── Obj/                 # Build artifacts
 ├── release/
-│   └── MiniHtml.b4xlib     # Compiled library
+│   └── MiniHTML.b4xlib     # Compiled library
+├── Helper.md               # Helper.bas API reference
+├── Cache.md                # Cache.bas API reference
 ├── LICENSE                 # MIT License
 └── README.md
 ```
