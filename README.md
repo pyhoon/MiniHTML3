@@ -30,23 +30,26 @@ MiniHTML3/
 │   ├── Lib/                  # Library source code
 │   │   ├── MiniHtml.bas         # Core class — HTML tag builder
 │   │   ├── MiniHtmlParser.bas   # HTML parser (credits: Erel)
-│   │   ├── MH.bas               # Static tag factories
-│   │   ├── Helper.bas           # Higher-level UI helpers & components
-│   │   ├── Cache.bas            # Page & component caching utilities
+│   │   ├── MC.bas               # Static cache module - generated from Code Snippet (Cache.txt)
+│   │   ├── MH.bas               # Static helper module - generated from Code Snippet (Helper.txt)
+│   │   ├── Cache.bas            # Page & component caching utilities - for generating Cache.txt
+│   │   ├── Helper.bas           # Higher-level UI helpers & components - for generating Helper.txt
+│   │   ├── Model.bas            # Pakai Server Model - for generating Model.txt
+│   │   ├── View.bas             # Pakai Server View - for generating View.txt
+│   │   ├── Handler.bas          # Pakai Server Handler - for generating Handler.txt
 │   │   ├── Index.bas            # Demo handler (B4J servlet)
 │   │   ├── MiniHTML.b4j         # B4J project file
 │   │   ├── manifest.txt         # Library manifest
 │   │   ├── libs.json            # External library dependencies (EndsMeet)
 │   │   ├── Snippets/            # Code templates: Handler, View, Model, Helper, CurrentDateTime
 │   │   └── Files/               # Config & asset files
-│   ├── B4X/                  # B4X multi-platform app projects
-│   │   ├── B4A/                 # Android app project
-│   │   ├── B4i/                 # iOS app project
-│   │   ├── B4J/                 # Desktop app project
-│   │   ├── server/              # Server-side B4J project
-│   │   ├── B4XMainPage.bas      # Shared main page
-│   │   └── Shared Files/        # Cross-platform shared assets
-│   └── Obj/                 # Build artifacts
+│   └── B4X/                  # B4X multi-platform app projects
+│       ├── B4A/                 # Android app project
+│       ├── B4i/                 # iOS app project
+│       ├── B4J/                 # Desktop app project
+│       ├── server/              # Server-side B4J project
+│       ├── B4XMainPage.bas      # Shared main page
+│       └── Shared Files/        # Cross-platform shared assets
 ├── release/
 │   └── MiniHTML.b4xlib     # Compiled library
 ├── Helper.md               # Helper.bas API reference
