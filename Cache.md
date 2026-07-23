@@ -9,6 +9,8 @@ Static-code module for caching MiniHtml objects in a `Map` context. Supports rou
 | `ExistInCache(ctx, Key)` | `Boolean` | Check if `Key` exists in the cache map |
 | `WriteToCache(ctx, Key, Value)` | `-` | Store `Value` in the cache map |
 | `ReadFromCache(ctx, Key)` | `Object` | Read from cache; returns `MiniHtml` if stored as MiniHtml or byte array, otherwise raw `Object` |
+| `ClearFromCache(ctx, Key)` | `-` | Remove a single key from the cache |
+| `ClearAllFromCache(ctx, MatchKey)` | `-` | Remove all keys containing `MatchKey` |
 | `ConvertFromBytes(Buffer())` | `MiniHtml` | Parse UTF‑8 byte array into a MiniHtml tree |
 | `ConvertToBytes` | `Byte()` | Serialize an empty MiniHtml to UTF‑8 byte array |
 
