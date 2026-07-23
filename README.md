@@ -191,6 +191,35 @@ End Sub
 - `Mode` — `uniline`, `multiline`, `meta`, `self`, `notext`
 - `SpecialTags` — Tags excluded from default indentation
 
+### Helper.bas — UI Components & Helpers
+
+See full API reference in [Helper.md](Helper.md).
+
+| Category | Key Methods |
+|----------|-------------|
+| **Tag Factories** | `Anchor`, `Button`, `Div`, `Span`, `H1`–`H6`, `Table`, `Form`, `Input`, `SelectTag`, `Img`, `Svg`, and 30+ more |
+| **Custom Components** | `Alert`, `Toast`, `ButtonSubmit`, `ButtonCancel`, `ContainerModal`, `ContainerToast`, `NavLinkItem` |
+| **Form Inputs** | `InputText`, `InputEmail`, `InputPassword`, `InputNumber`, `InputDate`, `InputFile`, `TextareaInput`, `CheckboxInput`, `RadioInput`, `SelectInput` |
+| **Bootstrap UI** | `Card`, `CardHeader`, `CardBody`, `Badge`, `ListGroup`, `ProgressBar`, `Spinner`, `AlertDismissible` |
+| **Layout** | `Container`, `ContainerFluid`, `Row`, `Col` |
+| **HTMX** | `HxGet`, `HxPost` |
+| **Navigation** | `Navbar`, `NavItem` |
+| **Utilities** | `CssLink`, `JsScript`, `ImgResponsive`, `ButtonIcon`, `AnchorButton`, `PageHeading` |
+
+### Cache.bas — Caching Utilities
+
+See full API reference in [Cache.md](Cache.md).
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `ExistInCache(ctx, Key)` | `Boolean` | Check if key exists in cache map |
+| `WriteToCache(ctx, Key, Value)` | `-` | Store value in cache map |
+| `ReadFromCache(ctx, Key)` | `Object` | Read from cache; auto-detects MiniHtml vs byte arrays |
+| `ClearFromCache(ctx, Key)` | `-` | Remove a single key from cache |
+| `ClearAllFromCache(ctx, MatchKey)` | `-` | Remove all keys containing `MatchKey` |
+| `ConvertFromBytes(Buffer())` | `MiniHtml` | Parse byte array into MiniHtml tree |
+| `ConvertToBytes` | `Byte()` | Serialize MiniHtml tree to byte array |
+
 ### MiniHtmlParser — HTML Parser
 
 The parser (credits to Erel) converts HTML strings into a tree of `HtmlNode` objects.
