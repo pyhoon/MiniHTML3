@@ -409,7 +409,8 @@ Public Sub cdn3 (format As String, url As String, keyvals As Map) As MiniHtml
 	'	Case Else '"style", "css"
 	'		mChildren.Add(Create("link").attr2(CreateMap("rel": "stylesheet", "href": url)).attr2(keyvals))
 	'End Select
-	Return cdn(format, url).attr2(keyvals).up(Me)
+	Dim m1 As MiniHtml = cdn(format, url)
+	Return m1.attr2(keyvals)
 End Sub
 
 '<code>body1.cdn("js", "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js") _
