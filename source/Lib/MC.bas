@@ -5,8 +5,9 @@ Type=StaticCode
 Version=10.5
 @EndOfDesignText@
 'MiniHTML Cache
-'Version 3.03
+'Version 3.06
 Sub Process_Globals
+
 End Sub
 
 Private Sub EmptyTag As MiniHtml
@@ -34,6 +35,23 @@ Public Sub ReadFromCache (ctx As Map, Key As String) As Object
 	End If
 End Sub
 
+'Remove key
+Public Sub ClearFromCache (ctx As Map, Key As String)
+	If ctx.ContainsKey(Key) Then ctx.Remove(Key)
+End Sub
+
+'Remove all matched *key*
+Public Sub ClearAllFromCache (ctx As Map, MatchKey As String)
+    Dim keys As List
+    keys.Initialize
+    For Each k As String In ctx.Keys
+        If k.Contains(MatchKey) Then keys.Add(k)
+    Next
+    For Each k As String In keys
+        ctx.Remove(k)
+    Next
+End Sub
+
 Public Sub ConvertFromBytes (Buffer() As Byte) As MiniHtml
 	Dim s As String = BytesToString(Buffer, 0, Buffer.Length, "UTF-8")
 	Return EmptyTag.Parse(s)
@@ -42,4 +60,5 @@ End Sub
 Public Sub ConvertToBytes As Byte()
 	Dim s As String = EmptyTag.build
 	Return s.GetBytes("UTF8")
+
 End Sub
