@@ -6,8 +6,8 @@ Version=10.5
 @EndOfDesignText@
 Sub Class_Globals
 ' MiniHtml View class
-' Version 3.03		
-	Private App As EndsMeet$end$
+' Version 3.10
+	Private App As EndsMeet'$end$
 End Sub
 
 Public Sub Initialize
@@ -104,26 +104,11 @@ Public Sub Modal (Action As String, CategoryList As List, Data As Map) As String
 End Sub
 
 Public Sub Alert (info As AlertInfo) As String
-	Dim div1 As MiniHtml = MH.Div
-	div1.cls("alert alert-" & info.Status)
-	div1.text(info.Message)
-	Return div1.build
+	Return MH.Alert(info)
 End Sub
 
 Public Sub Toast (info As ToastInfo, data As List) As String
-	Dim div1 As MiniHtml = MH.Div
-	div1.attr("id", "$endpoints$-container")
-	div1.attr("hx-swap-oob", "true")
-	$Endpoints$TableFilled(data).up(div1)
-	Dim script1 As MiniJs
-	script1.Initialize
-	script1.AddCustomEventDispatch("entity:changed", _
-	CreateMap( _
-	"entity": info.Entity, _
-	"action": info.Action, _
-	"message": info.Message, _
-	"status": info.Status))
-	Return div1.build & CRLF & script1.Generate
+	Return MH.Toast("$endpoints$-container", $Endpoints$TableFilled(data), info)
 End Sub
 
 Public Sub RenderedTable (data As List) As String
@@ -231,11 +216,11 @@ End Sub
 
 Private Sub $Endpoints$TableRow As MiniHtml
 	Dim tr1 As MiniHtml = MH.Tr
-	MH.Td.up(tr1).cls("align-middle").sty("text-align: right")'.text("{id}")
-	MH.Td.up(tr1).cls("align-middle")'.text("{code}")
-	MH.Td.up(tr1).cls("align-middle")'.text("{name}")
-	MH.Td.up(tr1).cls("align-middle")'.text("{category}")
-	MH.Td.up(tr1).cls("align-middle").sty("text-align: right")'.text("{price}")
+	MH.Td.up(tr1).cls("align-middle").sty("text-align: right")
+	MH.Td.up(tr1).cls("align-middle")
+	MH.Td.up(tr1).cls("align-middle")
+	MH.Td.up(tr1).cls("align-middle")
+	MH.Td.up(tr1).cls("align-middle").sty("text-align: right")
 	Dim td6 As MiniHtml = MH.Td.up(tr1)
 	td6.cls("align-middle text-center px-1 py-1")
 	Dim a1 As MiniHtml = MH.Anchor.up(td6)
@@ -479,54 +464,13 @@ Private Sub ContainerToast As MiniHtml
 End Sub
 
 Private Sub GitHubLink As MiniHtml
-	Dim div1 As MiniHtml = MH.Div.cls("text-center mb-3")
-	Dim a1 As MiniHtml = MH.Anchor.up(div1)
-	a1.attr("href", "https://github.com/pyhoon/pakai-server-b4j")
-	a1.cls("text-primary mr-1")
-	a1.attr("aria-label", "github")
-	a1.attr("title", "GitHub")
-	a1.attr("target", "_blank")
-	Dim svg1 As MiniHtml = MH.Svg.up(a1)
-	svg1.attr("aria-hidden", "true")
-	svg1.attr("width", "24")
-	svg1.attr("height", "24")
-	svg1.attr("version", "1.1")
-	svg1.attr("viewBox", "0 0 16 16")
-	Dim path1 As MiniHtml = MH.Path.up(svg1)
-	path1.attr("fill-rule", "evenodd")
-	path1.attr("d", "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z")
-	Dim a2 As MiniHtml = MH.Anchor.up(div1)
-	a2.attr("href", "https://github.com/pyhoon/pakai-server-b4j")
-	a2.sty("text-decoration: none")
-	a2.attr("target","_blank")
-	Dim span1 As MiniHtml = MH.Span.up(a2)
-	span1.sty("vertical-align: middle")
-	span1.text("GitHub")
-	Return div1
+	Return MH.GitHubLink
 End Sub
 
 Private Sub CategoriesLink As MiniHtml
-	Dim li1 As MiniHtml = MH.Li
-	li1.cls("nav-item d-block d-lg-block")
-	Dim a1 As MiniHtml = MH.Anchor.up(li1)
-	a1.attr("href", "/categories")
-	a1.cls("nav-link float-end")
-	a1.text("Categories")
-	Dim i1 As MiniHtml = MH.Icon.up(a1)
-	i1.cls("bi bi-tag me-2")
-	i1.attr("title", "Categories")
-	Return li1
+	Return MH.NavLinkItem("Categories", "/categories", "bi bi-tag me-2", "Categories")
 End Sub
 
-Private Sub HelpLink As MiniHtml
-	Dim li1 As MiniHtml = MH.Li
-	li1.cls("nav-item d-block d-lg-block")
-	Dim a1 As MiniHtml = MH.Anchor.up(li1)
-	a1.attr("href", "/help")
-	a1.cls("nav-link float-end")
-	a1.text("API")
-	Dim i1 As MiniHtml = MH.Icon.up(a1)
-	i1.cls("bi bi-gear me-2")
-	i1.attr("title", "API")
-	Return li1
+Public Sub HelpLink As MiniHtml
+	Return MH.NavLinkItem("API", "/help", "bi bi-gear me-2", "API")
 End Sub
