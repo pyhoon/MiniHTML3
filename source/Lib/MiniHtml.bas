@@ -272,10 +272,10 @@ Public Sub setParent (ParentTag As MiniHtml)
 	mParent = ParentTag
 End Sub
 
-' (deprecated) Use ChildByIndex
-'Public Sub Child (tagIndex As Int) As MiniHtml
-'	Return ChildByIndex(tagIndex)
-'End Sub
+' alias of ChildByIndex (deprecated)
+Public Sub child (tagIndex As Int) As MiniHtml
+	Return ChildByIndex(tagIndex)
+End Sub
 
 ' Get child matches tag name using deep search
 'Public Sub Child (value As String) As MiniHtml
@@ -391,34 +391,20 @@ Public Sub comment2 (value As String, newline As Boolean)
 	text($"<!--${value}-->"$)
 End Sub
 
-'<code>body1.cdn("script", "/assets/js/cdn.min.js")</code>
-'Public Sub cdn (format As String, url As String) As MiniHtml
-'	Return cdn2(format, url, "", "")
-'End Sub
-
-'<code>body1.cdn("js", "/assets/js/cdn.min.js")</code>
+'<code>head1.cdn("css", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css")</code>
 Public Sub cdn (format As String, url As String) As MiniHtml
 	Select format.ToLowerCase
 		Case "script", "js"
-			'Dim map1 As Map = CreateMap("src": url)
-			'If integrity <> "" Then map1.Put("integrity", integrity)
-			'If crossorigin <> "" Then map1.Put("crossorigin", crossorigin)
-			'mChildren.Add(Create("script").attr2(map1))
-			'Return Create("script").attr2(map1).up(Me)
 			Return Create("script").attr("src", url).up(Me)
-		Case Else '"style", "css"
-			'Dim map2 As Map = CreateMap("rel": "stylesheet", "href": url)
-			'If integrity <> "" Then map2.Put("integrity", integrity)
-			'If crossorigin <> "" Then map2.Put("crossorigin", crossorigin)
-			'mChildren.Add(Create("link").attr2(map2))
-			'Return Create("link").attr2(map2).up(Me)
+		Case "style", "css"
 			Return Create("link").attr("rel", "stylesheet").attr("href", url).up(Me)
+		Case Else
+			Return Me
 	End Select
-	'Return Me
 End Sub
 
 '<code>body1.cdn2("script", "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js", "sha384-hashes", "anonymous")</code>
-'Deprecated
+' (deprecated)
 Public Sub cdn2 (format As String, url As String, hash As String, credentials As String) As MiniHtml
 	Dim m1 As MiniHtml = cdn(format, url)
 	If hash <> "" Then m1.attr("integrity", hash)
@@ -427,14 +413,8 @@ Public Sub cdn2 (format As String, url As String, hash As String, credentials As
 End Sub
 
 '<code>body1.cdn3("script", "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js", CreateMap("integrity": "sha384-hashes", "crossorigin": "anonymous"))</code>
-'Deprecated
+' (deprecated)
 Public Sub cdn3 (format As String, url As String, keyvals As Map) As MiniHtml
-	'Select format.ToLowerCase
-	'	Case "script", "js"
-	'		mChildren.Add(Create("script").attr("src", url).attr2(keyvals))
-	'	Case Else '"style", "css"
-	'		mChildren.Add(Create("link").attr2(CreateMap("rel": "stylesheet", "href": url)).attr2(keyvals))
-	'End Select
 	Dim m1 As MiniHtml = cdn(format, url)
 	Return m1.attr2(keyvals)
 End Sub
@@ -699,12 +679,12 @@ Private Sub ShorthandToMiniHtml (m As Map) As MiniHtml
 					Dim attrs As Map = value
 					el.attr2(attrs)
 				Case "children"
-					Dim children As List = value
-					For Each child As Object In children
-						If child Is Map Then
-							ShorthandToMiniHtml(child).up(el)
-						Else If child Is String Then
-							el.text(child)
+					Dim cl As List = value
+					For Each chd As Object In cl
+						If chd Is Map Then
+							ShorthandToMiniHtml(chd).up(el)
+						Else If chd Is String Then
+							el.text(chd)
 						End If
 					Next
 				Case "mode"
@@ -770,36 +750,36 @@ Public Sub ToMap As Map
 	Next
 	If rest.Size > 0 Then props.Put("attrs", rest)
 	
-	Dim children As List
-	children.Initialize
+	Dim cl As List
+	cl.Initialize
 	Dim textCount As Int = 0
 	Dim tagCount As Int = 0
 	
-	For Each child As Object In mChildren
-		If child Is MiniHtml Then
+	For Each chd As Object In mChildren
+		If chd Is MiniHtml Then
 			tagCount = tagCount + 1
-		Else If child Is String Then
+		Else If chd Is String Then
 			textCount = textCount + 1
 		End If
 	Next
 	
 	If textCount = 1 And tagCount = 0 Then
-		For Each child As Object In mChildren
-			If child Is String Then
-				props.Put("text", child)
+		For Each chd As Object In mChildren
+			If chd Is String Then
+				props.Put("text", chd)
 				Exit
 			End If
 		Next
 	Else If textCount > 0 Or tagCount > 0 Then
-		For Each child As Object In mChildren
-			If child Is MiniHtml Then
-				Dim childMap As MiniHtml = child
-				children.Add(childMap.ToMap)
-			Else If child Is String Then
-				children.Add(child)
+		For Each chd As Object In mChildren
+			If chd Is MiniHtml Then
+				Dim childMap As MiniHtml = chd
+				cl.Add(childMap.ToMap)
+			Else If chd Is String Then
+				cl.Add(chd)
 			End If
 		Next
-		props.Put("children", children)
+		props.Put("children", cl)
 	End If
 	
 	Dim result As Map
@@ -984,7 +964,7 @@ Public Sub Append (Value As String)
 	mBuilder.Append(Value)
 End Sub
 
-' (deprecated) Use Append
+' Use Append (deprecated)
 'Public Sub Write (Value As String)
 '	mBuilder.Append(Value)
 'End Sub
