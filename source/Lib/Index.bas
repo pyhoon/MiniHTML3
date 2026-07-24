@@ -5,7 +5,7 @@ Type=Class
 Version=10.5
 @EndOfDesignText@
 'Index handler
-'Version: 3.06
+'Version: 3.10
 Sub Class_Globals
 	Private Response As ServletResponse
 	Private Method As String
