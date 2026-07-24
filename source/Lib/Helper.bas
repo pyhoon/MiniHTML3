@@ -483,6 +483,35 @@ Public Sub HxPost (href As String, target As String, swap As String) As MiniHtml
 	Return btn1
 End Sub
 
+Public Sub ContainerHxGet (id As String, url As String, trigger As String, text As String) As MiniHtml
+	Dim div1 As MiniHtml = Div
+	div1.attr("id", id)
+	div1.attr("hx-get", url)
+	div1.attr("hx-trigger", trigger)
+	div1.text(text)
+	Return div1
+End Sub
+
+Public Sub FormHxPost (url As String, target As String) As MiniHtml
+	Return FormHx("post", url, target)
+End Sub
+
+Public Sub FormHxPut (url As String, target As String) As MiniHtml
+	Return FormHx("put", url, target)
+End Sub
+
+Public Sub FormHxDelete (url As String, target As String) As MiniHtml
+	Return FormHx("delete", url, target)
+End Sub
+
+Public Sub FormHx (verb As String, url As String, target As String) As MiniHtml
+	Dim form1 As MiniHtml = Form
+	form1.attr("hx-"& verb, url)
+	form1.attr("hx-target", target)
+	form1.attr("hx-swap", "innerHTML")
+	Return form1
+End Sub
+
 ' ============================
 '  Navigation Helpers
 ' ============================
@@ -666,7 +695,7 @@ Public Sub NavLinkItemImage (href As String, img_src As String, img_title As Str
 	Return li1
 End Sub
 
-'Deprecated
+' (deprecated)
 Public Sub AnchorIcon (cls As String, hx_get As String, title_text As String, icon_class As String) As MiniHtml
 	Dim a1 As MiniHtml = Anchor
 	a1.cls(cls)
