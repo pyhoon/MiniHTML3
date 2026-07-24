@@ -60,5 +60,4 @@ End Sub
 Public Sub ConvertToBytes As Byte()
 	Dim s As String = EmptyTag.build
 	Return s.GetBytes("UTF8")
-
 End Sub
