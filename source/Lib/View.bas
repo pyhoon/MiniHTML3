@@ -7,7 +7,7 @@ Version=10.5
 Sub Class_Globals
 ' MiniHtml View class
 ' Version 3.10
-	Private App As EndsMeet'$end$
+	Private App As EndsMeet$end$
 End Sub
 
 Public Sub Initialize
