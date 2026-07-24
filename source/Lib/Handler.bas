@@ -6,7 +6,7 @@ Version=10.5
 @EndOfDesignText@
 Sub Class_Globals
 ' MiniHtml Handler class
-' Version 3.03
+' Version 3.10
 	Private App As EndsMeet
 	Private Path As String
 	Private Method As String
