@@ -5,7 +5,7 @@ Type=StaticCode
 Version=10.5
 @EndOfDesignText@
 'MiniHTML Cache
-'Version 3.06
+'Version: 3.10
 Sub Process_Globals
 
 End Sub
