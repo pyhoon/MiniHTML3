@@ -5,7 +5,7 @@ Type=Class
 Version=10.5
 @EndOfDesignText@
 'MiniHtml
-'Version: 3.06
+'Version: 3.10
 Sub Class_Globals
 	Private mIndents As Int
 	Private mIndentString As String
@@ -339,6 +339,32 @@ Private Sub DeepSearchByName (value As String) As MiniHtml
 			If ChildObject Is MiniHtml Then
 				Dim TheChild As MiniHtml = ChildObject
 				Dim result As MiniHtml = TheChild.ChildByName(value)
+				If Initialized(result) Then Return result
+			End If
+		Next
+	End If
+	Return Null
+End Sub
+
+' Get child matches unique class using deep search
+Public Sub ChildByClass (value As String) As MiniHtml
+	For Each ChildObject In mChildren
+		If ChildObject Is String Then Continue
+		If ChildObject Is MiniHtml Then
+			Dim TheChild As MiniHtml = ChildObject
+			If TheChild.ClassesAsString = value Then Return ChildObject
+		End If
+	Next
+	Return DeepSearchByClass(value)
+End Sub
+
+Private Sub DeepSearchByClass (value As String) As MiniHtml
+	If Initialized(mChildren) Then
+		For Each ChildObject In mChildren
+			If ChildObject Is String Then Continue
+			If ChildObject Is MiniHtml Then
+				Dim TheChild As MiniHtml = ChildObject
+				Dim result As MiniHtml = TheChild.ChildByClass(value)
 				If Initialized(result) Then Return result
 			End If
 		Next
