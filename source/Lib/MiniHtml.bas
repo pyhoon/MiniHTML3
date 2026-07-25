@@ -492,7 +492,10 @@ Public Sub addStyle (value As String) As MiniHtml
 	Try
 		Dim pairs() As String = Regex.Split(";", value)
 		For Each pair As String In pairs
-			Dim keyvals() As String = Regex.Split(":", pair.Trim)
+			Dim kv As String = pair.Trim
+			If kv = "" Then Continue
+			Dim keyvals() As String = Regex.Split(":", kv)
+			If keyvals.Length < 2 Then Continue
 			mStyles.Put(keyvals(0).Trim, keyvals(1).Trim)
 		Next
 		updateStyleAttribute
