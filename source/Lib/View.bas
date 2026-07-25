@@ -357,8 +357,8 @@ Private Sub ModalEdit As MiniHtml
 	Dim input2 As MiniHtml = MH.Input.up(group2)
 	input2.attr("type", "text")
 	input2.cls("form-control")
+	input2.attr("id", "code")
 	input2.attr("name", "code")
-	input2.attr("id", "input2")
 	input2.required
 	Dim group3 As MiniHtml = MH.Div.up(modalBody)
 	group3.cls("form-group")
@@ -372,7 +372,6 @@ Private Sub ModalEdit As MiniHtml
 	input3.cls("form-control")
 	input3.attr("id", "name")
 	input3.attr("name", "name")
-	input3.attr("id", "input3")
 	input3.required
 	Dim group4 As MiniHtml = MH.Div.up(modalBody)
 	group4.cls("form-group")
@@ -381,8 +380,8 @@ Private Sub ModalEdit As MiniHtml
 	Dim input4 As MiniHtml = MH.Input.up(group4)
 	input4.attr("type", "text")
 	input4.cls("form-control")
+	input4.attr("id", "price")
 	input4.attr("name", "price")
-	input4.attr("id", "input4")
 	Dim modalFooter As MiniHtml = MH.Div.up(form1).cls("modal-footer")
 	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
 	button1.cls("btn btn-primary px-3")
@@ -412,8 +411,8 @@ Private Sub ModalDelete As MiniHtml
 	div1.attr("id", "modal-messages")
 	Dim id1 As MiniHtml = MH.Input.up(modalBody)
 	id1.attr("type", "hidden")
-	id1.attr("name", "id")
 	id1.attr("id", "id")
+	id1.attr("name", "id")
 	MH.P.up(modalBody).Id = "p1"
 	Dim modalFooter As MiniHtml = MH.Div.up(form1).cls("modal-footer")
 	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
