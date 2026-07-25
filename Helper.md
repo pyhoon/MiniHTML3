@@ -83,7 +83,7 @@ Static-code module providing tag factories, Bootstrap 5 UI components, form help
 | Method | Returns | Description |
 |--------|---------|-------------|
 | `ConvertFromBytes(Buffer())` | `MiniHtml` | Parse UTF‑8 byte array into MiniHtml tree |
-| `ConvertToMiniHtml(Root)` | `Byte()` | Serialize MiniHtml tree to UTF‑8 byte array |
+| `ConvertToBytes(Root)` | `Byte()` | Serialize MiniHtml tree to UTF‑8 byte array |
 
 ## Bootstrap Layout Helpers
 
