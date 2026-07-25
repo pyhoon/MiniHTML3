@@ -969,6 +969,7 @@ End Sub
 '	mBuilder.Append(Value)
 'End Sub
 
+' Return String added by Append
 Public Sub ToString As String
 	Return mBuilder.ToString
 End Sub
