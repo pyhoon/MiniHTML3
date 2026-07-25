@@ -1,5 +1,4 @@
 ﻿B4J=true
-Group=Models
 ModulesStructureVersion=1
 Type=Class
 Version=10.5
@@ -94,7 +93,7 @@ End Sub
 Public Sub Create (Category As Int, Code As String, Name As String, Price As Double, Created_Date As String)
 	DB.Open
 	DB.Table = "tbl_$endpoints$"
-	DB.Columns = Array("category_id", "$endpoint$_code", "$endpoint$_name", "created_date")
+	DB.Columns = Array("category_id", "$endpoint$_code", "$endpoint$_name", "$endpoint$_price", "created_date")
 	DB.Parameters = Array(Category, Code, Name, Price, Created_Date)
 	DB.ReturnRow = True
 	DB.Save
@@ -113,7 +112,7 @@ End Sub
 Public Sub Update (Id As Int, Category As Int, Code As String, Name As String, Price As Double, Modified_Date As String)
 	DB.Open
 	DB.Table = "tbl_$endpoints$"
-	DB.Columns = Array("category_id", "$endpoint$_code", "$endpoint$_name", "modified_date")
+	DB.Columns = Array("category_id", "$endpoint$_code", "$endpoint$_name", "$endpoint$_price", "modified_date")
 	DB.Parameters = Array(Category, Code, Name, Price, Modified_Date)
 	DB.Condition = "id = ?"
 	DB.Parameter = Id
