@@ -20,7 +20,7 @@ MiniHTML3 lets you construct HTML documents programmatically in B4X using an obj
 - **Flat/minified output** — Set `Flat = True` to suppress line breaks
 - **Indentation control** — Customize indent string (default: `"  "`), control indent per-node
 - **Format attributes** — `FormatAttributes = True` aligns attributes across lines
-- **Child traversal** — `ChildByName`, `ChildById`, `ChildByIndex` with deep search
+- **Child traversal** — `ChildByName`, `ChildById`, `ChildByIndex`, `ChildByClass` with deep search
 
 ## Project Structure
 
@@ -114,6 +114,7 @@ End Sub
 | `Option` | `<option>` |
 | `Textarea` | `<textarea>` |
 | `Img` | `<img>` |
+| `Image` | Alias for `Img` |
 | `Meta` | `<meta>` |
 | `Link` | `<link>` |
 | `Script` | `<script>` |
@@ -170,7 +171,9 @@ End Sub
 **Traversal:**
 - `ChildByName(value)` — Deep search by tag name
 - `ChildById(value)` — Deep search by `id` attribute
+- `ChildByClass(value)` — Deep search by CSS class name
 - `ChildByIndex(index)` — Get child by position
+- `child(index)` — Alias for `ChildByIndex` (deprecated)
 
 **Parsing & JSON:**
 - `Parse(HtmlText)` — Parse HTML string into MiniHtml
@@ -197,14 +200,14 @@ See full API reference in [Helper.md](Helper.md).
 
 | Category | Key Methods |
 |----------|-------------|
-| **Tag Factories** | `Anchor`, `Button`, `Div`, `Span`, `H1`–`H6`, `Table`, `Form`, `Input`, `SelectTag`, `Img`, `Svg`, and 30+ more |
-| **Custom Components** | `Alert`, `Toast`, `ButtonSubmit`, `ButtonCancel`, `ContainerModal`, `ContainerToast`, `NavLinkItem` |
-| **Form Inputs** | `InputText`, `InputEmail`, `InputPassword`, `InputNumber`, `InputDate`, `InputFile`, `TextareaInput`, `CheckboxInput`, `RadioInput`, `SelectInput` |
-| **Bootstrap UI** | `Card`, `CardHeader`, `CardBody`, `Badge`, `ListGroup`, `ProgressBar`, `Spinner`, `AlertDismissible` |
-| **Layout** | `Container`, `ContainerFluid`, `Row`, `Col` |
-| **HTMX** | `HxGet`, `HxPost` |
-| **Navigation** | `Navbar`, `NavItem` |
-| **Utilities** | `CssLink`, `JsScript`, `ImgResponsive`, `ButtonIcon`, `AnchorButton`, `PageHeading` |
+| **Tag Factories** | `Anchor`, `Button`, `Div`, `Span`, `H1`–`H6`, `Table`, `Form`, `Input`, `SelectTag`, `Img`, `Image`, `Svg`, and 30+ more |
+| **Navigation** | `Navbar`, `NavbarExpand`, `NavbarToggler`, `NavbarCollapse`, `NavItem`, `NavLinkItem`, `NavLinkItemImage`, `CategoriesLink`, `GitHubLink` |
+| **Form Helpers** | `FormHx`, `FormHxPost`, `FormHxPut`, `FormHxDelete`, `ContainerHxGet` |
+| **Bootstrap UI** | `Alert`, `Toast`, `ContainerModal`, `ContainerToast`, `ButtonClose`, `ButtonAdd`, `ButtonSubmit`, `ButtonCancel`, `AnchorIcon` |
+| **Inputs** | `InputSearch`, `TextLabel`, `RequiredLabel`, `HiddenInput`, `RequiredTextInput`, `FormGroup`, `InputGroup` |
+| **Icons & Images** | `IconAnchor`, `ImageAnchor`, `FavoriteIcon` |
+| **Layout** | `ResponsiveHeader`, `CopyrightFooter`, `SponsorLink` |
+| **Utilities** | `OptionDisabled`, `ButtonSearch` |
 
 ### Cache.bas — Caching Utilities
 
@@ -218,7 +221,7 @@ See full API reference in [Cache.md](Cache.md).
 | `ClearFromCache(ctx, Key)` | `-` | Remove a single key from cache |
 | `ClearAllFromCache(ctx, MatchKey)` | `-` | Remove all keys containing `MatchKey` |
 | `ConvertFromBytes(Buffer())` | `MiniHtml` | Parse byte array into MiniHtml tree |
-| `ConvertToBytes` | `Byte()` | Serialize MiniHtml tree to byte array |
+| `ConvertToBytes` | `Byte()` | Serialize MiniHtml tree to byte array (renamed from `ConvertToMiniHtml`) |
 
 ### MiniHtmlParser — HTML Parser
 
@@ -361,6 +364,34 @@ Log(el.ToJson) ' {"button": {"text": "Submit", "required": true}}
 ## License
 
 MIT License. See [LICENSE](LICENSE).
+
+## Changelog
+
+### v3.10
+
+**New:**
+- Added Main View class template
+- Added `ChildByClass` sub — deep search by CSS class name
+- Added `DeepSearchByClass` sub (private)
+- Added `Image` sub (alias for `Img`)
+- Restored `child` sub (alias for `ChildByIndex`)
+- Added `NavbarExpand`, `NavbarToggler`, `NavbarCollapse`
+- Added `NavLinkItemImage`, `IconAnchor`, `ImageAnchor`
+- Added `FavoriteIcon`, `OptionDisabled`
+- Added `ResponsiveHeader`, `CopyrightFooter`, `SponsorLink`, `GitHubLink`
+- Added `ContainerHxGet`
+- Added `FormHx`, `FormHxPost`, `FormHxPut`, `FormHxDelete`
+- Added `AddAttr`, `AddAttr2`, `AddAttr3`, `AddText` (private)
+
+**Code Snippets:**
+- Added `Boilerplate.txt`
+
+**Updates:**
+- Updated Cache module — `ConvertToMiniHtml` renamed to `ConvertToBytes`
+- Updated Helper module
+- Updated Navbar methods
+- Updated all module version strings to 3.10
+- Code refactoring across multiple modules
 
 ## Links
 
