@@ -27,6 +27,7 @@ Static-code module providing tag factories, Bootstrap 5 UI components, form help
 | `Link` | `<link>` | |
 | `Icon` | `<i>` | |
 | `Img` | `<img>` | |
+| `Image` | `<img>` | Alias for `Img` |
 | `Svg` | `<svg>` | |
 | `Path` | `<path>` | |
 | `Input` | `<input>` | |
@@ -71,6 +72,11 @@ Static-code module providing tag factories, Bootstrap 5 UI components, form help
 | `ContainerModal` | `MiniHtml` | Bootstrap 5 modal container (fade, centered) |
 | `ContainerModalWithButton(TitleText, ParagraphText, ButtonText)` | `MiniHtml` | Modal with header, body, footer + dismiss button |
 | `ContainerToast` | `MiniHtml` | Fixed-position toast container (bottom‑right) |
+| `NavLinkItemImage(href, img_src, img_title)` | `MiniHtml` | `<li class="nav-item">` with anchor + image |
+| `IconAnchor(cls, href, icon_class, icon_title)` | `MiniHtml` | Anchor with icon |
+| `ImageAnchor(href, img_src, img_class, img_title)` | `MiniHtml` | Anchor with image |
+| `FavoriteIcon(icon_type, href)` | `MiniHtml` | `<link rel="icon" type="..." href="...">` |
+| `OptionDisabled(text)` | `MiniHtml` | `<option value="" disabled>{text}</option>` |
 
 ## Conversion Helpers
 
@@ -132,12 +138,20 @@ All form helpers apply `form-control` class and guard empty-string parameters.
 |--------|---------|-------------|
 | `HxGet(href, target, swap, trigger)` | `MiniHtml` | Anchor with `hx-get`, `hx-target`, `hx-swap`, `hx-trigger` |
 | `HxPost(href, target, swap)` | `MiniHtml` | Button with `hx-post`, `hx-target`, `hx-swap` |
+| `ContainerHxGet(id, url, trigger, text)` | `MiniHtml` | `<div>` with `hx-get`, `hx-trigger`, and inner text |
+| `FormHx(verb, url, target)` | `MiniHtml` | `<form>` with `hx-{verb}`, `hx-target`, `hx-swap="innerHTML"` |
+| `FormHxPost(url, target)` | `MiniHtml` | Shorthand for `FormHx("post", url, target)` |
+| `FormHxPut(url, target)` | `MiniHtml` | Shorthand for `FormHx("put", url, target)` |
+| `FormHxDelete(url, target)` | `MiniHtml` | Shorthand for `FormHx("delete", url, target)` |
 
 ## Navigation Helpers
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `Navbar(brand, expand, cls)` | `MiniHtml` | `<nav class="navbar navbar-expand-{expand} {cls}">` with brand |
+| `Navbar(cls)` | `MiniHtml` | `<nav class="navbar {cls}">` with `container-fluid` child |
+| `NavbarExpand(cls, expand, brand)` | `MiniHtml` | `<nav class="navbar navbar-expand-{expand} {cls}">` with brand |
+| `NavbarToggler` | `MiniHtml` | Collapse toggler button (`navbar-toggler`) |
+| `NavbarCollapse` | `MiniHtml` | Collapsible nav container (`collapse navbar-collapse`) |
 | `NavItem(text, href, active)` | `MiniHtml` | `<li class="nav-item"><a class="nav-link[ active]" href="...">` |
 
 ## Utility Helpers
@@ -150,6 +164,10 @@ All form helpers apply `form-control` class and guard empty-string parameters.
 | `PageHeading(text, tag)` | `MiniHtml` | Generic heading tag with inner text |
 | `ButtonIcon(text, iconCls, btnCls)` | `MiniHtml` | Button with icon + text |
 | `AnchorButton(text, href, cls)` | `MiniHtml` | Anchor styled as button (`class="btn {cls}"`) |
+| `ResponsiveHeader` | `MiniHtml` | `<head>` with charset + viewport meta tags |
+| `CopyrightFooter` | `MiniHtml` | Footer with copyright text + heart icon |
+| `SponsorLink` | `MiniHtml` | PayPal sponsor link with image |
+| `GitHubLink` | `MiniHtml` | GitHub link with SVG icon + text |
 
 ## Types
 
