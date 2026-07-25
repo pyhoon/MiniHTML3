@@ -6,7 +6,7 @@ Version=10.5
 @EndOfDesignText@
 Sub Class_Globals
 ' MiniHtml View class
-' Version 3.10
+' Version 3.11
 	Private App As EndsMeet$end$
 End Sub
 

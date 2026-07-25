@@ -4,8 +4,8 @@ ModulesStructureVersion=1
 Type=StaticCode
 Version=10.5
 @EndOfDesignText@
-'MiniHTML Cache
-'Version: 3.10
+'MiniHtml Cache
+'Version: 3.11
 Sub Process_Globals
 
 End Sub

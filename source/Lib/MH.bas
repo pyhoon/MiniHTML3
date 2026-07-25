@@ -5,7 +5,7 @@ Type=StaticCode
 Version=10.5
 @EndOfDesignText@
 'MiniHtml Helper
-'Version: 3.10
+'Version: 3.11
 Sub Process_Globals
 	'Type AlertInfo (Message As String, Status As String)
 	'Type ToastInfo (Entity As String, Action As String, Message As String, Status As String)

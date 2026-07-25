@@ -367,6 +367,12 @@ MIT License. See [LICENSE](LICENSE).
 
 ## Changelog
 
+### v3.11
+
+**New:**
+- Bug fixed for AddStyle in MiniHtml.bas
+- Bug Fixed in Code Snippets (Helper.txt, Model.txt, View.txt)
+
 ### v3.10
 
 **New:**

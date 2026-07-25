@@ -6,7 +6,7 @@ Version=10.5
 @EndOfDesignText@
 Sub Class_Globals
 ' MiniHtml Boilerplate class
-' Version: 3.10
+' Version: 3.11
 End Sub
 
 Public Sub Initialize

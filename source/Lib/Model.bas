@@ -5,7 +5,7 @@ Version=10.5
 @EndOfDesignText@
 Sub Class_Globals
 ' MiniHtml Model class
-' Version 3.10
+' Version 3.11
 	Private DB As MiniORM$end$
 	Type $Endpoints$ (category_id As Int, $endpoints$_code As String, $endpoints$_name As String, $endpoints$_price As Double)	
 End Sub
