@@ -191,15 +191,12 @@ End Sub
 ' ====================
 
 Public Sub ConvertFromBytes (Buffer() As Byte) As MiniHtml
-	Dim tag1 As MiniHtml
-	tag1.Initialize("")
 	Dim s As String = BytesToString(Buffer, 0, Buffer.Length, "UTF-8")
-	Return tag1.Parse(s)
+	Return CreateTag("").Parse(s)
 End Sub
 
-Public Sub ConvertToMiniHtml (Root As MiniHtml) As Byte()
-	Dim s As String = Root.build
-	Return s.GetBytes("UTF8")
+Public Sub ConvertToBytes (Root As MiniHtml) As Byte()
+	Return Root.build.GetBytes("UTF8")
 End Sub
 
 ' ============================
@@ -225,14 +222,30 @@ End Sub
 '  Form Input Helpers
 ' ============================
 
+Private Sub AddAttr (tag As MiniHtml, key As String, value As String)
+	If value <> "" Then tag.attr(key, value)
+End Sub
+
+Private Sub AddAttr2 (tag As MiniHtml, key As String, value As String, condition As Boolean)
+	If condition Then tag.attr(key, value)
+End Sub
+
+Private Sub AddAttr3 (tag As MiniHtml, key As String, condition As Boolean)
+	If condition Then tag.attr3(key)
+End Sub
+
+Private Sub AddText (tag As MiniHtml, value As String)
+	If value <> "" Then tag.text(value)
+End Sub
+
 Public Sub InputText (id As String, name As String, value As String, placeholder As String) As MiniHtml
 	Dim input1 As MiniHtml = Input
 	input1.attr("type", "text")
 	input1.cls("form-control")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
-	If placeholder <> "" Then input1.attr("placeholder", placeholder)
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "value", value)
+	AddAttr(input1, "placeholder", placeholder)
 	Return input1
 End Sub
 
@@ -240,10 +253,10 @@ Public Sub InputEmail (id As String, name As String, value As String, placeholde
 	Dim input1 As MiniHtml = Input
 	input1.attr("type", "email")
 	input1.cls("form-control")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
-	If placeholder <> "" Then input1.attr("placeholder", placeholder)
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "value", value)
+	AddAttr(input1, "placeholder", placeholder)
 	Return input1
 End Sub
 
@@ -251,9 +264,9 @@ Public Sub InputPassword (id As String, name As String, placeholder As String) A
 	Dim input1 As MiniHtml = Input
 	input1.attr("type", "password")
 	input1.cls("form-control")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If placeholder <> "" Then input1.attr("placeholder", placeholder)
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "placeholder", placeholder)
 	Return input1
 End Sub
 
@@ -261,12 +274,12 @@ Public Sub InputNumber (id As String, name As String, value As String, MinValue 
 	Dim input1 As MiniHtml = Input
 	input1.attr("type", "number")
 	input1.cls("form-control")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
-	If MinValue <> "" Then input1.attr("min", MinValue)
-	If MaxValue <> "" Then input1.attr("max", MaxValue)
-	If StepValue <> "" Then input1.attr("step", StepValue)
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "value", value)
+	AddAttr(input1, "min", MinValue)
+	AddAttr(input1, "max", MaxValue)
+	AddAttr(input1, "step", StepValue)
 	Return input1
 End Sub
 
@@ -274,9 +287,9 @@ Public Sub InputDate (id As String, name As String, value As String) As MiniHtml
 	Dim input1 As MiniHtml = Input
 	input1.attr("type", "date")
 	input1.cls("form-control")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "value", value)
 	Return input1
 End Sub
 
@@ -284,21 +297,21 @@ Public Sub InputFile (id As String, name As String, accept As String, multiple A
 	Dim input1 As MiniHtml = Input
 	input1.attr("type", "file")
 	input1.cls("form-control")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If accept <> "" Then input1.attr("accept", accept)
-	If multiple Then input1.attr3("multiple")
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "accept", accept)
+	AddAttr3(input1, "multiple", multiple)
 	Return input1
 End Sub
 
 Public Sub TextareaInput (id As String, name As String, value As String, rows As Int, placeholder As String) As MiniHtml
 	Dim textarea1 As MiniHtml = Textarea
 	textarea1.cls("form-control")
-	If id <> "" Then textarea1.attr("id", id)
-	If name <> "" Then textarea1.attr("name", name)
-	If rows > 0 Then textarea1.attr("rows", rows)
-	If placeholder <> "" Then textarea1.attr("placeholder", placeholder)
-	If value <> "" Then textarea1.text(value)
+	AddAttr(textarea1, "id", id)
+	AddAttr(textarea1, "name", name)
+	AddAttr2(textarea1, "rows", rows, rows > 0)
+	AddAttr(textarea1, "placeholder", placeholder)
+	AddText(textarea1, value)
 	Return textarea1
 End Sub
 
@@ -307,14 +320,13 @@ Public Sub CheckboxInput (id As String, name As String, value As String, text As
 	Dim input1 As MiniHtml = Input.up(div1)
 	input1.attr("type", "checkbox")
 	input1.cls("form-check-input")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
-	If checked Then input1.attr3("checked")
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "value", value)
+	AddAttr3(input1, "checked", checked)
 	If text <> "" Then
-		Dim label1 As MiniHtml = Label.up(div1)
-		label1.cls("form-check-label")
-		If id <> "" Then label1.attr("for", id)
+		Dim label1 As MiniHtml = Label.up(div1).cls("form-check-label")
+		AddAttr(label1, "for", id)
 		label1.text(text)
 	End If
 	Return div1
@@ -325,14 +337,13 @@ Public Sub RadioInput (name As String, id As String, value As String, text As St
 	Dim input1 As MiniHtml = Input.up(div1)
 	input1.attr("type", "radio")
 	input1.cls("form-check-input")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
-	If checked Then input1.attr3("checked")
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "value", value)
+	AddAttr3(input1, "checked", checked)
 	If text <> "" Then
-		Dim label1 As MiniHtml = Label.up(div1)
-		label1.cls("form-check-label")
-		If id <> "" Then label1.attr("for", id)
+		Dim label1 As MiniHtml = Label.up(div1).cls("form-check-label")
+		AddAttr(label1, "for", id)
 		label1.text(text)
 	End If
 	Return div1
@@ -341,22 +352,15 @@ End Sub
 Public Sub SelectInput (id As String, name As String, options As List, selectedValue As String, prompt As String, required As Boolean) As MiniHtml
 	Dim select1 As MiniHtml = SelectTag
 	select1.cls("form-select")
-	If id <> "" Then select1.attr("id", id)
-	If name <> "" Then select1.attr("name", name)
-	If required Then select1.required
-	If prompt <> "" Then
-		Dim opt1 As MiniHtml = Option.up(select1)
-		opt1.attr("value", "")
-		opt1.text(prompt)
-		opt1.disabled
-	End If
-	For Each M1 As Map In options
+	AddAttr(select1, "id", id)
+	AddAttr(select1, "name", name)
+	AddAttr3(select1, "required", required)
+	If prompt <> "" Then OptionDisabled(prompt).up(select1)
+	For Each opt As Map In options
 		Dim opt2 As MiniHtml = Option.up(select1)
-		Dim optValue As String = M1.Get("value")
-		Dim optText As String = M1.Get("text")
-		opt2.attr("value", optValue)
-		opt2.text(optText)
-		If selectedValue <> "" And optValue = selectedValue Then opt2.selected
+		opt2.attr("value", opt.Get("value"))
+		opt2.text(opt.Get("text"))
+		opt2.selectedIf(selectedValue <> "" And opt.Get("value") = selectedValue)
 	Next
 	Return select1
 End Sub
@@ -403,7 +407,7 @@ End Sub
 Public Sub ListGroupItem (text As String, cls As String) As MiniHtml
 	Dim li1 As MiniHtml = Li
 	li1.cls("list-group-item " & cls)
-	If text <> "" Then li1.text(text)
+	AddText(li1, text)
 	Return li1
 End Sub
 
@@ -419,8 +423,8 @@ Public Sub ProgressBar (now As Int, MinValue As Int, MaxValue As Int, cls As Str
 	Dim div1 As MiniHtml = Div.cls("progress")
 	Dim bar1 As MiniHtml = Div.up(div1)
 	bar1.cls("progress-bar " & cls)
-	bar1.attr("role", "progressbar")
 	bar1.sty("width: " & now & "%")
+	bar1.attr("role", "progressbar")
 	bar1.attr("aria-valuenow", now)
 	bar1.attr("aria-valuemin", MinValue)
 	bar1.attr("aria-valuemax", MaxValue)
@@ -454,8 +458,8 @@ Public Sub AlertDismissible (message As String, status As String) As MiniHtml
 	div1.attr("role", "alert")
 	div1.text(message)
 	Dim btn1 As MiniHtml = Button.up(div1)
-	btn1.attr("type", "button")
 	btn1.cls("btn-close")
+	btn1.attr("type", "button")
 	btn1.attr("data-bs-dismiss", "alert")
 	Return div1
 End Sub
@@ -468,9 +472,9 @@ Public Sub HxGet (href As String, target As String, swap As String, trigger As S
 	Dim a1 As MiniHtml = Anchor
 	a1.attr("href", "#")
 	a1.attr("hx-get", href)
-	If target <> "" Then a1.attr("hx-target", target)
-	If swap <> "" Then a1.attr("hx-swap", swap)
-	If trigger <> "" Then a1.attr("hx-trigger", trigger)
+	AddAttr(a1, "hx-target", target)
+	AddAttr(a1, "hx-swap", swap)
+	AddAttr(a1, "hx-trigger", trigger)
 	Return a1
 End Sub
 
@@ -478,35 +482,35 @@ Public Sub HxPost (href As String, target As String, swap As String) As MiniHtml
 	Dim btn1 As MiniHtml = Button
 	btn1.attr("type", "button")
 	btn1.attr("hx-post", href)
-	If target <> "" Then btn1.attr("hx-target", target)
-	If swap <> "" Then btn1.attr("hx-swap", swap)
+	AddAttr(btn1, "hx-target", target)
+	AddAttr(btn1, "hx-swap", swap)	
 	Return btn1
 End Sub
 
-Public Sub ContainerHxGet (id As String, url As String, trigger As String, text As String) As MiniHtml
+Public Sub ContainerHxGet (id As String, href As String, trigger As String, text As String) As MiniHtml
 	Dim div1 As MiniHtml = Div
 	div1.attr("id", id)
-	div1.attr("hx-get", url)
+	div1.attr("hx-get", href)
 	div1.attr("hx-trigger", trigger)
 	div1.text(text)
 	Return div1
 End Sub
 
-Public Sub FormHxPost (url As String, target As String) As MiniHtml
-	Return FormHx("post", url, target)
+Public Sub FormHxPost (href As String, target As String) As MiniHtml
+	Return FormHx("post", href, target)
 End Sub
 
-Public Sub FormHxPut (url As String, target As String) As MiniHtml
-	Return FormHx("put", url, target)
+Public Sub FormHxPut (href As String, target As String) As MiniHtml
+	Return FormHx("put", href, target)
 End Sub
 
-Public Sub FormHxDelete (url As String, target As String) As MiniHtml
-	Return FormHx("delete", url, target)
+Public Sub FormHxDelete (href As String, target As String) As MiniHtml
+	Return FormHx("delete", href, target)
 End Sub
 
-Public Sub FormHx (verb As String, url As String, target As String) As MiniHtml
+Public Sub FormHx (verb As String, href As String, target As String) As MiniHtml
 	Dim form1 As MiniHtml = Form
-	form1.attr("hx-"& verb, url)
+	form1.attr("hx-"& verb, href)
 	form1.attr("hx-target", target)
 	form1.attr("hx-swap", "innerHTML")
 	Return form1
@@ -829,9 +833,9 @@ Public Sub RequiredTextInput (id As String, name As String, value As String) As 
 	Dim input1 As MiniHtml = Input
 	input1.attr("type", "text")
 	input1.cls("form-control")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
+	AddAttr(input1, "id", id)
+	AddAttr(input1, "name", name)
+	AddAttr(input1, "value", value)
 	input1.required
 	Return input1
 End Sub
@@ -912,7 +916,7 @@ End Sub
 
 Public Sub ResponsiveHeader As MiniHtml
 	Dim head1 As MiniHtml = Head
-	Meta.up(head1).attr("http-equiv", "content-type" ).attr("content", "text/html; charset=utf-8")
+	Meta.up(head1).attr("charset", "utf-8")
 	Meta.up(head1).attr("name", "viewport").attr("content", "width=device-width, initial-scale=1")
 	Return head1
 End Sub
