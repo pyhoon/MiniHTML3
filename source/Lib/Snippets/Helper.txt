@@ -772,10 +772,10 @@ End Sub
 
 Public Sub ButtonSearch (text As String, cls As String, hx_post As String, hx_target As String) As MiniHtml
 	Dim searchBtn As MiniHtml = Button
-	searchBtn.cls("btn btn-danger btn-md pl-3 pr-3 ml-3 mt-2")
-	searchBtn.text("Submit")
-	searchBtn.attr("hx-post", "/hx/products/table")
-	searchBtn.attr("hx-target", "#products-container")
+	searchBtn.cls(cls)
+	searchBtn.text(text)
+	searchBtn.attr("hx-post", hx_post)
+	searchBtn.attr("hx-target", hx_target)
 	searchBtn.attr("hx-swap", "innerHTML")
 	Return searchBtn
 End Sub
