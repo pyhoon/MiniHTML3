@@ -138,11 +138,11 @@ All form helpers apply `form-control` class and guard empty-string parameters.
 |--------|---------|-------------|
 | `HxGet(href, target, swap, trigger)` | `MiniHtml` | Anchor with `hx-get`, `hx-target`, `hx-swap`, `hx-trigger` |
 | `HxPost(href, target, swap)` | `MiniHtml` | Button with `hx-post`, `hx-target`, `hx-swap` |
-| `ContainerHxGet(id, url, trigger, text)` | `MiniHtml` | `<div>` with `hx-get`, `hx-trigger`, and inner text |
-| `FormHx(verb, url, target)` | `MiniHtml` | `<form>` with `hx-{verb}`, `hx-target`, `hx-swap="innerHTML"` |
-| `FormHxPost(url, target)` | `MiniHtml` | Shorthand for `FormHx("post", url, target)` |
-| `FormHxPut(url, target)` | `MiniHtml` | Shorthand for `FormHx("put", url, target)` |
-| `FormHxDelete(url, target)` | `MiniHtml` | Shorthand for `FormHx("delete", url, target)` |
+| `ContainerHxGet(id, href, trigger, text)` | `MiniHtml` | `<div>` with `hx-get`, `hx-trigger`, and inner text |
+| `FormHx(verb, href, target)` | `MiniHtml` | `<form>` with `hx-{verb}`, `hx-target`, `hx-swap="innerHTML"` |
+| `FormHxPost(href, target)` | `MiniHtml` | Shorthand for `FormHx("post", href, target)` |
+| `FormHxPut(href, target)` | `MiniHtml` | Shorthand for `FormHx("put", href, target)` |
+| `FormHxDelete(href, target)` | `MiniHtml` | Shorthand for `FormHx("delete", href, target)` |
 
 ## Navigation Helpers
 
