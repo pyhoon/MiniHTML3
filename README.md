@@ -392,10 +392,6 @@ MIT License. See [LICENSE](LICENSE).
 - All components refactored to fluent chaining with `.Parent`
 - `NavbarExpand` signature changed (now takes `brand_icon_cls` and `brand_text`)
 
-**Bug Fixes:**
-- `AddStyle` fixed
-- Code Snippets fixed (Helper.txt, Model.txt, View.txt)
-
 ### v3.11
 
 **New:**
