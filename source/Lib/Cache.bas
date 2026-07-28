@@ -57,7 +57,7 @@ Public Sub ConvertFromBytes (Buffer() As Byte) As MiniHtml
 	Return EmptyTag.Parse(s)
 End Sub
 
-Public Sub ConvertToBytes As Byte()
-	Dim s As String = EmptyTag.build
+Public Sub ConvertToBytes (tag As MiniHtml) As Byte()
+	Dim s As String = tag.build
 	Return s.GetBytes("UTF8")
 End Sub
