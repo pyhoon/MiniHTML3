@@ -4,10 +4,9 @@ ModulesStructureVersion=1
 Type=StaticCode
 Version=10.5
 @EndOfDesignText@
+Sub Process_Globals
 'MiniHtml Cache
 'Version: 3.20
-Sub Process_Globals
-
 End Sub
 
 Private Sub EmptyTag As MiniHtml
