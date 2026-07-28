@@ -5,7 +5,7 @@ Type=StaticCode
 Version=10.5
 @EndOfDesignText@
 Sub Process_Globals
-'MiniHtml Helper
+'MiniHtml Helper class (not incuded in the MiniHtml library)
 'Version: 3.20
 	'Type AlertInfo (Message As String, Status As String)
 	'Type ToastInfo (Entity As String, Action As String, Message As String, Status As String)
@@ -558,8 +558,8 @@ End Sub
 
 Public Sub ResponsiveHeader As MiniHtml
 	Return Head _
-	.down(Meta).attr("charset", "utf-8").Parent _
-	.down(Meta).attr("name", "viewport").attr("content", "width=device-width, initial-scale=1").Parent
+	.down(Meta).attr("charset", "UTF-8").Parent _
+	.down(Meta).attr("name", "viewport").attr("content", "width=device-width, initial-scale=1.0").Parent
 End Sub
 
 Public Sub CopyrightFooter As MiniHtml
