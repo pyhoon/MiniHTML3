@@ -5,7 +5,7 @@ Type=Class
 Version=10.5
 @EndOfDesignText@
 'MiniHtml
-'Version: 3.11
+'Version: 3.20
 Sub Class_Globals
 	Private mIndents As Int
 	Private mIndentString As String
@@ -54,7 +54,7 @@ Public Sub Initialize (Name As String)
 			mMode = mMeta
 		Case "title", "h1", "h2", "h3", "h4", "h5", "p", "script", "label", "button", "span", "li", "a", "i", "b", "u", "option", "bold", "italic", "underline", "strong", "em", "del", "th", "td", "small", "textarea"
 			mMode = mUniline
-		Case "img", "br"', "link"
+		Case "img", "br", "path"', "link"
 			mMode = mSelf ' self closing tag
 		Case "text", ""
 			mMode = mNoTag
@@ -123,19 +123,19 @@ Public Sub buildImpl (indent As Int, AlignAttribute2 As Boolean) As String
 	
 	For Each key As String In mAttributes.Keys
 		'Log(key & "->" & mAttributes.Get(key))
-		Dim attrs As String = mAttributes.Get(key)
+		Dim attribute As String = mAttributes.Get(key)
 		
 		SB.Append(Separator)
 		SB.Append(key)
-		If attrs.Length > 0 Then
+		If attribute.Length > 0 Then
 			SB.Append("=")
-			If attrs.StartsWith("'") And attrs.EndsWith("'") Then
+			If attribute.StartsWith("'") And attribute.EndsWith("'") Then
 				'SB.Append("'")
-				SB.Append(attrs)
+				SB.Append(attribute)
 				'SB.Append("'")
 			Else
 				SB.Append(QUOTE)
-				SB.Append(attrs)
+				SB.Append(attribute)
 				SB.Append(QUOTE)
 			End If
 		End If
@@ -211,7 +211,7 @@ Public Sub attr (key As String, value As String) As MiniHtml
 End Sub
 
 'Insert more attributes from map
-Public Sub attr2 (keyvals As Map) As MiniHtml
+Public Sub attrs (keyvals As Map) As MiniHtml
 	For Each key As String In keyvals.Keys
 		Dim value As String = keyvals.Get(key)
 		mAttributes.Put(key, value)
@@ -220,9 +220,66 @@ Public Sub attr2 (keyvals As Map) As MiniHtml
 End Sub
 
 'Add a no-value attribute
+'(deprecated)
 Public Sub attr3 (key As String) As MiniHtml
+	'mAttributes.Put(key, "")
+	'Return Me
+	Return bool(key)
+End Sub
+
+'Add a boolean attribute (no value)
+Public Sub bool (key As String) As MiniHtml
 	mAttributes.Put(key, "")
 	Return Me
+End Sub
+
+'Set an attribute with a key and value if value is non zero length string
+Public Sub attrIf (condition As Boolean, key As String, value As String) As MiniHtml
+	Return IIf(condition, attr(key, value), Me)
+End Sub
+
+'Set an attribute with a key and value if value is non zero length string
+Public Sub attrIfValue (key As String, value As String) As MiniHtml
+	'Return IIf(value.Length > 0, attr(key, value), Me)
+	Return attrIf(value.Length > 0, key, value)
+End Sub
+
+'Insert more attributes from map if each keyconditions by key is true
+Public Sub attrsIfConditions (keyconditions As Map, keyvals As Map) As MiniHtml
+	For Each key As String In keyvals.Keys
+		attrIf(keyconditions.Get(key), key, keyvals.Get(key))
+	Next
+	Return Me
+End Sub
+
+'Insert more attributes from map if each value is non zero length string
+Public Sub attrsIfValues (keyvals As Map) As MiniHtml
+	For Each key As String In keyvals.Keys
+		attrIfValue(key, keyvals.Get(key))
+	Next
+	Return Me
+End Sub
+
+'Add a no-value attribute if condition is true
+'(deprecated)
+Public Sub attr3If (condition As Boolean, key As String) As MiniHtml
+	'Return IIf(condition, Me, attr3(key))
+	Return boolIf(condition, key)
+End Sub
+
+'Add a no-value attribute if condition is true
+Public Sub boolIf (condition As Boolean, key As String) As MiniHtml
+	Return IIf(condition, bool(key), Me)
+End Sub
+
+'Set text attribute if condition is true
+Public Sub textIf (condition As Boolean, value As String) As MiniHtml
+	Return IIf(condition, text(value), Me)
+End Sub
+
+'Set text attribute if value is non zero length string
+Public Sub textIfValue (value As String) As MiniHtml
+	Return textIf(value <> "", value)
 End Sub
 
 'Add to Parent and return the current (child) tag (alias of addTo)
@@ -256,6 +313,19 @@ Public Sub down (ChildTag As MiniHtml) As MiniHtml
 	Return add2(ChildTag)
 End Sub
 
+'Append a Child and return the (Parent) tag if condition is true
+'Public Sub add2If (condition As Boolean, ChildTag As MiniHtml) As MiniHtml
+'	If condition = False Then Return Me
+'	mChildren.Add(ChildTag)
+'	ChildTag.Parent = Me
+'	Return Me 'ChildTag
+'End Sub
+
+'Append a Child and return the (Parent) tag if condition is true (alias of add2If)
+'Public Sub downIf (condition As Boolean, ChildTag As MiniHtml) As MiniHtml
+'	Return add2If(condition, ChildTag)
+'End Sub
+
 'Return the Children list
 Public Sub getChildren As List
 	Return mChildren
@@ -272,15 +342,16 @@ Public Sub setParent (ParentTag As MiniHtml)
 	mParent = ParentTag
 End Sub
 
+'Return the Parent tag if condition is true
+'Public Sub ParentIf (condition As Boolean) As MiniHtml
+'	If condition = False Then Return Me
+'	Return mParent
+'End Sub
+
 ' alias of ChildByIndex (deprecated)
 Public Sub child (tagIndex As Int) As MiniHtml
 	Return ChildByIndex(tagIndex)
 End Sub
-
-' Get child matches tag name using deep search
-'Public Sub Child (value As String) As MiniHtml
-'	Return ChildByName(value)
-'End Sub
 
 ' Get child by index
 Public Sub ChildByIndex (tagIndex As Int) As MiniHtml
@@ -346,13 +417,16 @@ Private Sub DeepSearchByName (value As String) As MiniHtml
 	Return Null
 End Sub
 
-' Get child matches unique class using deep search
+' Get child containing specified class using deep search
 Public Sub ChildByClass (value As String) As MiniHtml
 	For Each ChildObject In mChildren
 		If ChildObject Is String Then Continue
 		If ChildObject Is MiniHtml Then
 			Dim TheChild As MiniHtml = ChildObject
-			If TheChild.ClassesAsString = value Then Return ChildObject
+			If TheChild.mClasses.IndexOf(value) > -1 Then
+				'Log($"${value} hit ${TheChild.mClasses}"$)
+				Return ChildObject
+			End If
 		End If
 	Next
 	Return DeepSearchByClass(value)
@@ -365,7 +439,9 @@ Private Sub DeepSearchByClass (value As String) As MiniHtml
 			If ChildObject Is MiniHtml Then
 				Dim TheChild As MiniHtml = ChildObject
 				Dim result As MiniHtml = TheChild.ChildByClass(value)
-				If Initialized(result) Then Return result
+				If Initialized(result) Then
+					Return result
+				End If
 			End If
 		Next
 	End If
@@ -416,7 +492,7 @@ End Sub
 ' (deprecated)
 Public Sub cdn3 (format As String, url As String, keyvals As Map) As MiniHtml
 	Dim m1 As MiniHtml = cdn(format, url)
-	Return m1.attr2(keyvals)
+	Return m1.attrs(keyvals)
 End Sub
 
 '<code>body1.cdn("js", "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js") _
@@ -510,6 +586,28 @@ Public Sub removeStyle (key As String) As MiniHtml
 	If mStyles.ContainsKey(key) Then mStyles.Remove(key)
 	updateStyleAttribute
 	Return Me
+End Sub
+
+'Add a class if condition is true
+Public Sub addClassIf (condition As Boolean, value As String) As MiniHtml
+	If condition = False Then Return Me
+	Return addClass(value)
+End Sub
+
+'Add a class if condition is true
+Public Sub clsIf (condition As Boolean, value As String) As MiniHtml
+	Return addClassIf(condition, value)
+End Sub
+
+'Add class based on condition is true or false
+Public Sub addClassIIf (condition As Boolean, valueIfTrue As String, valueIfFalse As String) As MiniHtml
+	If condition Then Return addClass(valueIfTrue)
+	Return addClass(valueIfFalse)
+End Sub
+
+'Add class based on condition is true or false
+Public Sub clsIIf (condition As Boolean, valueIfTrue As String, valueIfFalse As String) As MiniHtml
+	Return addClassIIf(condition, valueIfTrue, valueIfFalse)
 End Sub
 
 'Remove class attribute if empty
@@ -679,8 +777,8 @@ Private Sub ShorthandToMiniHtml (m As Map) As MiniHtml
 				Case "text"
 					el.text(value)
 				Case "attrs"
-					Dim attrs As Map = value
-					el.attr2(attrs)
+					Dim attributes As Map = value
+					el.attrs(attributes)
 				Case "children"
 					Dim cl As List = value
 					For Each chd As Object In cl
@@ -938,8 +1036,8 @@ Public Sub selected As MiniHtml
 	Return Me
 End Sub
 
-Public Sub selectedIf (Condition As Boolean) As MiniHtml
-	If Condition Then mAttributes.Put("selected", "")
+Public Sub selectedIf (condition As Boolean) As MiniHtml
+	If condition Then mAttributes.Put("selected", "")
 	Return Me
 End Sub
 
