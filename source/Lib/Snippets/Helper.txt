@@ -551,8 +551,8 @@ End Sub
 
 Public Sub ResponsiveHeader As MiniHtml
 	Return Head _
-	.down(Meta).attr("charset", "utf-8").Parent _
-	.down(Meta).attr("name", "viewport").attr("content", "width=device-width, initial-scale=1").Parent
+	.down(Meta).attr("charset", "UTF-8").Parent _
+	.down(Meta).attr("name", "viewport").attr("content", "width=device-width, initial-scale=1.0").Parent
 End Sub
 
 Public Sub CopyrightFooter As MiniHtml
