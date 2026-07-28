@@ -240,8 +240,9 @@ Public Sub bool (key As String) As MiniHtml
 End Sub
 
 'Set an attribute with a key and value if value is non zero length string
-Public Sub attrIf (condition As Boolean, key As String, value As String) As MiniHtml
-	Return IIf(condition, attr(key, value), Me)
+Public Sub attrIf (condition As Boolean, key As String, value As String) As MiniHtml	
+	If condition Then Return attr(key, value)
+	Return Me
 End Sub
 
 'Set an attribute with a key and value if value is non zero length string
@@ -269,18 +270,19 @@ End Sub
 'Add a no-value attribute if condition is true
 '(deprecated)
 Public Sub attr3If (condition As Boolean, key As String) As MiniHtml
-	'Return IIf(condition, Me, attr3(key))
 	Return boolIf(condition, key)
 End Sub
 
 'Add a no-value attribute if condition is true
 Public Sub boolIf (condition As Boolean, key As String) As MiniHtml
-	Return IIf(condition, bool(key), Me)
+	If condition Then Return bool(key)
+	Return Me
 End Sub
 
 'Set text attribute if condition is true
 Public Sub textIf (condition As Boolean, value As String) As MiniHtml
-	Return IIf(condition, text(value), Me)
+	If condition Then Return text(value)
+	Return Me
 End Sub
 
 'Set text attribute if value is non zero length string
@@ -350,8 +352,8 @@ End Sub
 
 'Return the Parent tag if condition is true
 'Public Sub ParentIf (condition As Boolean) As MiniHtml
-'	If condition = False Then Return Me
-'	Return mParent
+'	If condition Then Return mParent
+'	 Return Me
 'End Sub
 
 ' alias of ChildByIndex (deprecated)
@@ -596,8 +598,8 @@ End Sub
 
 'Add a class if condition is true
 Public Sub addClassIf (condition As Boolean, value As String) As MiniHtml
-	If condition = False Then Return Me
-	Return addClass(value)
+	If condition Then Return addClass(value)
+	Return Me
 End Sub
 
 'Add a class if condition is true
