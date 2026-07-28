@@ -234,7 +234,7 @@ Public Sub InputDate (id As String, name As String, value As String) As MiniHtml
 End Sub
 
 Public Sub InputFile (id As String, name As String, accept As String, multiple As Boolean) As MiniHtml
-	Return Input.attr("type", "file").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "accept": accept, "multiple": multiple))
+	Return Input.attr("type", "file").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "accept": accept)).boolIf(multiple, "multiple")
 End Sub
 
 Public Sub TextareaInput (id As String, name As String, value As String, rows As Int, placeholder As String) As MiniHtml
