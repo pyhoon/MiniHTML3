@@ -41,7 +41,14 @@ MiniHTML3/
 │   │   ├── MiniHTML.b4j         # B4J project file
 │   │   ├── manifest.txt         # Library manifest
 │   │   ├── libs.json            # External library dependencies (EndsMeet)
-│   │   ├── Snippets/            # Code templates: Handler, View, Model, Helper, CurrentDateTime
+│   │   ├── Snippets/            # Code template snippets (.txt)
+│   │   │   ├── Handler.txt         # CRUD handler template
+│   │   │   ├── View.txt            # View page template with caching
+│   │   │   ├── Model.txt           # Database model template
+│   │   │   ├── Helper.txt          # Helper module template (MH.bas)
+│   │   │   ├── Boilerplate.txt     # Boilerplate page template
+│   │   │   ├── Cache.txt           # Cache module template (MC.bas)
+│   │   │   └── CurrentDateTime.txt # Date/time utility snippet
 │   │   └── Files/               # Config & asset files
 │   └── B4X/                  # B4X multi-platform app projects
 │       ├── B4A/                 # Android app project
