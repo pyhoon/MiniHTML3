@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=10.5
 @EndOfDesignText@
+'Template use for generating Handler.txt Code Snippets
 Sub Class_Globals
 ' MiniHtml Handler class
 ' Version 3.20
