@@ -219,6 +219,12 @@ Public Sub attrs (keyvals As Map) As MiniHtml
 	Return Me
 End Sub
 
+'Insert more attributes from map
+'(deprecated)
+Public Sub attr2 (keyvals As Map) As MiniHtml
+	Return attrs(keyvals)
+End Sub
+
 'Add a no-value attribute
 '(deprecated)
 Public Sub attr3 (key As String) As MiniHtml
