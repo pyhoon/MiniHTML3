@@ -5,7 +5,7 @@ Type=Class
 Version=10.3
 @EndOfDesignText@
 ' Main View
-' Version: 3.11
+' Version: 3.20
 Sub Class_Globals
 	Private mModal As MiniHtml
 	Private mToast As MiniHtml
@@ -75,7 +75,7 @@ Private Sub PageBody As MiniHtml
 	If mToast.IsInitialized Then mToast.up(body1)
 	Dim nav1 As MiniHtml = MH.Navbar("navbar-light navbar-expand-lg sticky-top bg-info py-1").up(body1)
 	Dim div1 As MiniHtml = nav1.child(0)
-	MH.IconAnchor("navbar-brand me-0 me-lg-2 pt-2", "", "bi bi-infinity h3", "").up(div1).attr("href", "#")
+	MH.IconAnchor("navbar-brand me-0 me-lg-2 pt-2", "#", "bi bi-infinity h3", "").up(div1)
 	MH.Anchor.cls("navbar-brand").up(div1).attr("href", "$SERVER_URL$").text("$APP_TRADEMARK$")
 	MH.NavbarToggler.up(div1)
 	Dim collapse1 As MiniHtml = MH.NavbarCollapse.up(div1)
