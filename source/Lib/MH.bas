@@ -4,9 +4,9 @@ ModulesStructureVersion=1
 Type=StaticCode
 Version=10.5
 @EndOfDesignText@
-'MiniHtml Helper
-'Version: 3.11
 Sub Process_Globals
+'MiniHtml Helper
+'Version: 3.20
 	'Type AlertInfo (Message As String, Status As String)
 	'Type ToastInfo (Entity As String, Action As String, Message As String, Status As String)
 End Sub
@@ -15,6 +15,21 @@ Public Sub CreateTag (Name As String) As MiniHtml
 	Dim tag1 As MiniHtml
 	tag1.Initialize(Name)
 	Return tag1
+End Sub
+
+Public Sub CreateMiniJs As MiniJs
+	Dim s As MiniJs
+	s.Initialize
+	Return s
+End Sub
+
+Public Sub ConvertFromBytes (Buffer() As Byte) As MiniHtml
+	Dim s As String = BytesToString(Buffer, 0, Buffer.Length, "UTF-8")
+	Return CreateTag("").Parse(s)
+End Sub
+
+Public Sub ConvertToBytes (Root As MiniHtml) As Byte()
+	Return Root.build.GetBytes("UTF8")
 End Sub
 
 Public Sub Anchor As MiniHtml
@@ -186,19 +201,6 @@ Public Sub Textarea As MiniHtml
 	Return CreateTag("textarea")
 End Sub
 
-' ====================
-'  Conversion Helpers
-' ====================
-
-Public Sub ConvertFromBytes (Buffer() As Byte) As MiniHtml
-	Dim s As String = BytesToString(Buffer, 0, Buffer.Length, "UTF-8")
-	Return CreateTag("").Parse(s)
-End Sub
-
-Public Sub ConvertToBytes (Root As MiniHtml) As Byte()
-	Return Root.build.GetBytes("UTF8")
-End Sub
-
 ' ============================
 '  Bootstrap Layout Helpers
 ' ============================
@@ -218,151 +220,69 @@ Public Sub Col (cols As String) As MiniHtml
 	Return Div.cls("col-" & cols)
 End Sub
 
-' ============================
-'  Form Input Helpers
-' ============================
-
-Private Sub AddAttr (tag As MiniHtml, key As String, value As String)
-	If value <> "" Then tag.attr(key, value)
-End Sub
-
-Private Sub AddAttr2 (tag As MiniHtml, key As String, value As String, condition As Boolean)
-	If condition Then tag.attr(key, value)
-End Sub
-
-Private Sub AddAttr3 (tag As MiniHtml, key As String, condition As Boolean)
-	If condition Then tag.attr3(key)
-End Sub
-
-Private Sub AddText (tag As MiniHtml, value As String)
-	If value <> "" Then tag.text(value)
-End Sub
-
 Public Sub InputText (id As String, name As String, value As String, placeholder As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "text")
-	input1.cls("form-control")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "value", value)
-	AddAttr(input1, "placeholder", placeholder)
-	Return input1
+	Return Input.attr("type", "text").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "value": value, "placeholder": placeholder))
 End Sub
 
 Public Sub InputEmail (id As String, name As String, value As String, placeholder As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "email")
-	input1.cls("form-control")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "value", value)
-	AddAttr(input1, "placeholder", placeholder)
-	Return input1
+	Return Input.attr("type", "email").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "value": value, "placeholder": placeholder))
 End Sub
 
 Public Sub InputPassword (id As String, name As String, placeholder As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "password")
-	input1.cls("form-control")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "placeholder", placeholder)
-	Return input1
+	Return Input.attr("type", "password").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "placeholder": placeholder))
 End Sub
 
 Public Sub InputNumber (id As String, name As String, value As String, MinValue As String, MaxValue As String, StepValue As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "number")
-	input1.cls("form-control")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "value", value)
-	AddAttr(input1, "min", MinValue)
-	AddAttr(input1, "max", MaxValue)
-	AddAttr(input1, "step", StepValue)
-	Return input1
+	Return Input.attr("type", "number").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "value": value, "min": MinValue, "max": MaxValue, "step": StepValue))
 End Sub
 
 Public Sub InputDate (id As String, name As String, value As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "date")
-	input1.cls("form-control")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "value", value)
-	Return input1
+	Return Input.attr("type", "date").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "value": value))
 End Sub
 
 Public Sub InputFile (id As String, name As String, accept As String, multiple As Boolean) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "file")
-	input1.cls("form-control")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "accept", accept)
-	AddAttr3(input1, "multiple", multiple)
-	Return input1
+	Return Input.attr("type", "file").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "accept": accept, "multiple": multiple))
 End Sub
 
 Public Sub TextareaInput (id As String, name As String, value As String, rows As Int, placeholder As String) As MiniHtml
-	Dim textarea1 As MiniHtml = Textarea
-	textarea1.cls("form-control")
-	AddAttr(textarea1, "id", id)
-	AddAttr(textarea1, "name", name)
-	AddAttr2(textarea1, "rows", rows, rows > 0)
-	AddAttr(textarea1, "placeholder", placeholder)
-	AddText(textarea1, value)
-	Return textarea1
+	Return Textarea.cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "placeholder": placeholder)).attrIf(rows > 0, "rows", rows).textIfValue(value)
 End Sub
 
 Public Sub CheckboxInput (id As String, name As String, value As String, text As String, checked As Boolean) As MiniHtml
-	Dim div1 As MiniHtml = Div.cls("form-check")
-	Dim input1 As MiniHtml = Input.up(div1)
-	input1.attr("type", "checkbox")
-	input1.cls("form-check-input")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "value", value)
-	AddAttr3(input1, "checked", checked)
-	If text <> "" Then
-		Dim label1 As MiniHtml = Label.up(div1).cls("form-check-label")
-		AddAttr(label1, "for", id)
-		label1.text(text)
-	End If
-	Return div1
+	Dim input1 As MiniHtml = Input.attr("type", "checkbox").cls("form-check-input").attrsIfValues(CreateMap("id": id, "name": name, "value": value)).boolIf(checked, "checked")
+	Dim label1 As MiniHtml = Label.cls("form-check-label").attrIfValue("for", id).textIfValue(text)
+	Return Div.cls("form-check").down(input1).Parent.down(label1).Parent
 End Sub
 
 Public Sub RadioInput (name As String, id As String, value As String, text As String, checked As Boolean) As MiniHtml
-	Dim div1 As MiniHtml = Div.cls("form-check")
-	Dim input1 As MiniHtml = Input.up(div1)
-	input1.attr("type", "radio")
-	input1.cls("form-check-input")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "value", value)
-	AddAttr3(input1, "checked", checked)
-	If text <> "" Then
-		Dim label1 As MiniHtml = Label.up(div1).cls("form-check-label")
-		AddAttr(label1, "for", id)
-		label1.text(text)
-	End If
-	Return div1
+	Dim input1 As MiniHtml = Input.attr("type", "radio").cls("form-check-input").attrsIfValues(CreateMap("id": id, "name": name, "value": value)).boolIf(checked, "checked")
+	Dim label1 As MiniHtml = Label.cls("form-check-label").attrIfValue("for", id).textIfValue(text)
+	Return Div.cls("form-check").down(input1).Parent.down(label1).Parent
 End Sub
 
 Public Sub SelectInput (id As String, name As String, options As List, selectedValue As String, prompt As String, required As Boolean) As MiniHtml
-	Dim select1 As MiniHtml = SelectTag
-	select1.cls("form-select")
-	AddAttr(select1, "id", id)
-	AddAttr(select1, "name", name)
-	AddAttr3(select1, "required", required)
+	Dim select1 As MiniHtml = SelectTag.cls("form-select").attrsIfValues(CreateMap("id": id, "name": name)).boolIf(required, "required")
 	If prompt <> "" Then OptionDisabled(prompt).up(select1)
 	For Each opt As Map In options
-		Dim opt2 As MiniHtml = Option.up(select1)
-		opt2.attr("value", opt.Get("value"))
-		opt2.text(opt.Get("text"))
-		opt2.selectedIf(selectedValue <> "" And opt.Get("value") = selectedValue)
+		OptionSelected(opt.Get("text"), opt.Get("value"), selectedValue <> "" And opt.Get("value") = selectedValue).up(select1)
 	Next
 	Return select1
+End Sub
+
+Public Sub HiddenInput (id As String, name As String, value As String) As MiniHtml
+	Return Input.attr("type", "hidden").attrsIfValues(CreateMap("id": id, "name": name, "value": value))
+End Sub
+
+Public Sub RequiredLabel (text As String, forId As String) As MiniHtml
+	Return Label.attrIfvalue("for", forId).text(text).down(Span).cls("text-danger").text("*").Parent
+End Sub
+
+Public Sub RequiredTextInput (id As String, name As String, value As String) As MiniHtml
+	Return Input.attr("type", "text").cls("form-control").attrsIfValues(CreateMap("id": id, "name": name, "value": value)).required
+End Sub
+
+Public Sub RequiredDropdown (id As String, name As String) As MiniHtml
+	Return SelectTag.cls("form-select").attrsIfValues(CreateMap("id": id, "name": name)).required
 End Sub
 
 ' ============================
@@ -394,10 +314,7 @@ Public Sub CardText As MiniHtml
 End Sub
 
 Public Sub Badge (text As String, cls As String) As MiniHtml
-	Dim span1 As MiniHtml = Span
-	span1.cls("badge " & cls)
-	span1.text(text)
-	Return span1
+	Return Span.cls("badge " & cls).text(text)
 End Sub
 
 Public Sub ListGroup As MiniHtml
@@ -405,63 +322,29 @@ Public Sub ListGroup As MiniHtml
 End Sub
 
 Public Sub ListGroupItem (text As String, cls As String) As MiniHtml
-	Dim li1 As MiniHtml = Li
-	li1.cls("list-group-item " & cls)
-	AddText(li1, text)
-	Return li1
+	Return Li.cls("list-group-item " & cls).textIfValue(text)
 End Sub
 
 Public Sub ListGroupButton (text As String, cls As String, active As Boolean) As MiniHtml
-	Dim btn1 As MiniHtml = Button
-	btn1.cls("list-group-item list-group-item-action " & cls)
-	If active Then btn1.cls("active")
-	btn1.text(text)
-	Return btn1
+	Return Button.cls("list-group-item list-group-item-action").clsIf(cls <> "", cls).clsIf(active, "active").text(text)
 End Sub
 
-Public Sub ProgressBar (now As Int, MinValue As Int, MaxValue As Int, cls As String, showLabel As Boolean) As MiniHtml
-	Dim div1 As MiniHtml = Div.cls("progress")
-	Dim bar1 As MiniHtml = Div.up(div1)
-	bar1.cls("progress-bar " & cls)
-	bar1.sty("width: " & now & "%")
-	bar1.attr("role", "progressbar")
-	bar1.attr("aria-valuenow", now)
-	bar1.attr("aria-valuemin", MinValue)
-	bar1.attr("aria-valuemax", MaxValue)
-	If showLabel Then bar1.text(now & "%")
-	Return div1
+Public Sub ProgressBar (NowPercent As Int, MinValue As Int, MaxValue As Int, cls As String, showLabel As Boolean) As MiniHtml
+	Return Div.cls("progress").down(Div).cls("progress-bar").clsIf(cls <> "", cls).sty("width: " & NowPercent & "%").attr("role", "progressbar").attr("aria-valuenow", NowPercent).attr("aria-valuemin", MinValue).attr("aria-valuemax", MaxValue).textIf(showLabel, NowPercent & "%").Parent
 End Sub
 
 Public Sub Spinner (cls As String, text As String) As MiniHtml
-	Dim div1 As MiniHtml = Div
-	div1.cls("spinner-border " & cls)
-	div1.attr("role", "status")
-	If text <> "" Then
-		Span.up(div1).cls("visually-hidden").text(text)
-	End If
-	Return div1
+	Dim span1 As MiniHtml = Span.cls("visually-hidden").text(text)
+	Return Div.cls("spinner-border").clsIf(cls <> "", cls).attr("role", "status").down(span1).Parent
 End Sub
 
 Public Sub SpinnerGrow (cls As String, text As String) As MiniHtml
-	Dim div1 As MiniHtml = Div
-	div1.cls("spinner-grow " & cls)
-	div1.attr("role", "status")
-	If text <> "" Then
-		Span.up(div1).cls("visually-hidden").text(text)
-	End If
-	Return div1
+	Dim span1 As MiniHtml = Span.cls("visually-hidden").text(text)
+	Return Div.cls("spinner-grow").clsIf(cls <> "", cls).attr("role", "status").down(span1).Parent
 End Sub
 
 Public Sub AlertDismissible (message As String, status As String) As MiniHtml
-	Dim div1 As MiniHtml = Div
-	div1.cls("alert alert-" & status & " alert-dismissible fade show")
-	div1.attr("role", "alert")
-	div1.text(message)
-	Dim btn1 As MiniHtml = Button.up(div1)
-	btn1.cls("btn-close")
-	btn1.attr("type", "button")
-	btn1.attr("data-bs-dismiss", "alert")
-	Return div1
+	Return Div.cls("alert alert-" & status & " alert-dismissible fade show").attr("role", "alert").text(message).down(Button).cls("btn-close").attr("type", "button").attr("data-bs-dismiss", "alert").Parent
 End Sub
 
 ' ============================
@@ -469,31 +352,15 @@ End Sub
 ' ============================
 
 Public Sub HxGet (href As String, target As String, swap As String, trigger As String) As MiniHtml
-	Dim a1 As MiniHtml = Anchor
-	a1.attr("href", "#")
-	a1.attr("hx-get", href)
-	AddAttr(a1, "hx-target", target)
-	AddAttr(a1, "hx-swap", swap)
-	AddAttr(a1, "hx-trigger", trigger)
-	Return a1
+	Return Anchor.attr("hx-get", href).attrsIfValues(CreateMap("hx-target": target, "hx-swap": swap, "hx-trigger": trigger))
 End Sub
 
 Public Sub HxPost (href As String, target As String, swap As String) As MiniHtml
-	Dim btn1 As MiniHtml = Button
-	btn1.attr("type", "button")
-	btn1.attr("hx-post", href)
-	AddAttr(btn1, "hx-target", target)
-	AddAttr(btn1, "hx-swap", swap)	
-	Return btn1
+	Return Button.attr("type", "button").attr("hx-post", href).attrsIfValues(CreateMap("hx-target": target, "hx-swap": swap))
 End Sub
 
 Public Sub ContainerHxGet (id As String, href As String, trigger As String, text As String) As MiniHtml
-	Dim div1 As MiniHtml = Div
-	div1.attr("id", id)
-	div1.attr("hx-get", href)
-	div1.attr("hx-trigger", trigger)
-	div1.text(text)
-	Return div1
+	Return Div.attr("id", id).attr("hx-get", href).attr("hx-trigger", trigger).text(text)
 End Sub
 
 Public Sub FormHxPost (href As String, target As String) As MiniHtml
@@ -509,11 +376,7 @@ Public Sub FormHxDelete (href As String, target As String) As MiniHtml
 End Sub
 
 Public Sub FormHx (verb As String, href As String, target As String) As MiniHtml
-	Dim form1 As MiniHtml = Form
-	form1.attr("hx-"& verb, href)
-	form1.attr("hx-target", target)
-	form1.attr("hx-swap", "innerHTML")
-	Return form1
+	Return Form.attr("hx-"& verb, href).attr("hx-target", target).attr("hx-swap", "innerHTML")
 End Sub
 
 ' ============================
@@ -522,57 +385,28 @@ End Sub
 
 'Navbar with "container-fluid" class div
 Public Sub Navbar (cls As String) As MiniHtml
-	Dim nav1 As MiniHtml = Nav
-	nav1.cls("navbar " & cls)
-	ContainerFluid.up(nav1)
-	Return nav1
+	Return Nav.cls("navbar " & cls).down(ContainerFluid).Parent
 End Sub
 
 Public Sub NavItem (text As String, href As String, active As Boolean) As MiniHtml
-	Dim li1 As MiniHtml = Li
-	li1.cls("nav-item")
-	Dim a1 As MiniHtml = Anchor.up(li1)
-	a1.attr("href", href)
-	If active Then
-		a1.cls("nav-link active")
-	Else
-		a1.cls("nav-link")
-	End If
-	a1.text(text)
-	Return li1
+	Return Li.cls("nav-item").down(Anchor).attr("href", href).cls("nav-link").clsIf(active, "active").text(text).Parent
 End Sub
 
-'Navbar with "container-fluid" class div and "navbar-brand" class text anchor
-Public Sub NavbarExpand (cls As String, expand As String, brand As String) As MiniHtml
-	Dim nav1 As MiniHtml = Nav
-	nav1.cls("navbar navbar-expand-" & expand & " " & cls)
-	Dim container1 As MiniHtml = ContainerFluid.up(nav1)
-	If brand <> "" Then
-		Dim a1 As MiniHtml = Anchor.up(container1)
-		a1.cls("navbar-brand")
-		a1.attr("href", "#")
-		a1.text(brand)
-	End If
-	Return nav1
+'Navbar with "container-fluid" class div, 2 "navbar-brand" class anchors and an icon class
+Public Sub NavbarExpand (cls As String, expand As String, brand_icon_cls As String, brand_text As String) As MiniHtml
+	Return Nav.cls("navbar navbar-expand-" & expand).clsIf(cls <> "", cls) _
+	.down(ContainerFluid) _
+	.down(Anchor).cls("navbar-brand").attr("href", "#").down(Icon).cls(brand_icon_cls).Parent.Parent _
+	.down(Anchor).cls("navbar-brand").attr("href", "$SERVER_URL$").text(brand_text).Parent _
+	.Parent
 End Sub
 
 Public Sub NavbarToggler As MiniHtml
-	Dim button1 As MiniHtml = Button
-	button1.cls("navbar-toggler d-md-block d-lg-none collapsed")
-	button1.attr("type", "button")
-	button1.attr("data-bs-toggle", "collapse")
-	button1.attr("data-bs-target", "#navbarCollapse")
-	button1.sty("border: none")
-	Span.up(button1).cls("navbar-toggler-icon")
-	Return button1
+	Return Button.cls("navbar-toggler d-md-block d-lg-none collapsed").attr("type", "button").attr("data-bs-toggle", "collapse").attr("data-bs-target", "#navbarCollapse").sty("border: none").down(Span).cls("navbar-toggler-icon").Parent
 End Sub
 
 Public Sub NavbarCollapse As MiniHtml
-	Dim div1 As MiniHtml = Div
-	div1.cls("collapse navbar-collapse")
-	div1.attr("id", "navbarCollapse")
-	Ul.up(div1).cls("navbar-nav navbar-brand ms-auto mb-md-0")
-	Return div1
+	Return Div.cls("collapse navbar-collapse").attr("id", "navbarCollapse").down(Ul).cls("navbar-nav navbar-brand ms-auto mb-md-0").Parent
 End Sub
 
 ' ============================
@@ -580,46 +414,172 @@ End Sub
 ' ============================
 
 Public Sub CssLink (href As String) As MiniHtml
-	Dim link1 As MiniHtml = Link
-	link1.attr("rel", "stylesheet")
-	link1.attr("href", href)
-	Return link1
+	Return Link.attr("rel", "stylesheet").attr("href", href)
 End Sub
 
 Public Sub JsScript (src As String) As MiniHtml
-	Dim script1 As MiniHtml = Script
-	script1.attr("src", src)
-	Return script1
+	Return Script.attr("src", src)
 End Sub
 
 Public Sub ImgResponsive (src As String, alt As String, cls As String) As MiniHtml
-	Dim img1 As MiniHtml = Img
-	img1.attr("src", src)
-	img1.attr("alt", alt)
-	img1.cls("img-fluid " & cls)
-	Return img1
+	Return Img.attr("src", src).attr("alt", alt).cls("img-fluid " & cls)
 End Sub
 
 Public Sub PageHeading (text As String, tag As String) As MiniHtml
-	Dim heading As MiniHtml = CreateTag(tag)
-	heading.text(text)
-	Return heading
+	Return CreateTag(tag).text(text)
 End Sub
 
 Public Sub ButtonIcon (text As String, iconCls As String, btnCls As String) As MiniHtml
-	Dim btn1 As MiniHtml = Button
-	btn1.cls(btnCls)
-	If iconCls <> "" Then Icon.up(btn1).cls(iconCls)
-	If text <> "" Then btn1.text(" " & text)
-	Return btn1
+	Return Button.cls(btnCls).down(Icon).cls(iconCls).Parent.text(" " & text).Parent
 End Sub
 
 Public Sub AnchorButton (text As String, href As String, cls As String) As MiniHtml
-	Dim a1 As MiniHtml = Anchor
-	a1.attr("href", href)
-	a1.cls("btn " & cls)
-	If text <> "" Then a1.text(text)
-	Return a1
+	Return Anchor.attr("href", href).cls("btn " & cls).textIfValue(text)
+End Sub
+
+Public Sub NavLinkItem (text As String, href As String, icon_cls As String, icon_title As String) As MiniHtml
+	Return Li.cls("nav-item d-block d-lg-block") _
+	.down(Anchor).attr("href", href).cls("nav-link float-end") _
+	.down(Icon).cls(icon_cls).attr("title", icon_title) _
+	.Parent.text(text).Parent
+End Sub
+
+Public Sub NavLinkItemImage (href As String, img_src As String, img_title As String) As MiniHtml
+	Return Li.cls("nav-item d-block d-lg-none").multiline _
+	.down(Anchor).cls("nav-link float-end").attr("href", href).attr("target", "_blank").multiline _
+	.down(Img).attr("src", img_src).cls("my-1").sty("height: 36px").attrIf(img_title <> "", "title", img_title) _
+	.Parent.Parent
+End Sub
+
+' (deprecated)
+Public Sub AnchorIcon (cls As String, hx_get As String, title_text As String, icon_class As String) As MiniHtml
+	Return Anchor.cls(cls).attr("hx-get", hx_get).attr("hx-target", "#modal-content").attr("hx-trigger", "click").attr("data-bs-target", "#modal-container").attr("data-bs-toggle", "modal").down(Icon).cls(icon_class).attr("title", title_text).Parent
+End Sub
+
+Public Sub IconAnchor (cls As String, href As String, icon_class As String, icon_title As String) As MiniHtml
+	Return Anchor.cls(cls).attrIf(href <> "", "href", href).down(Icon).cls(icon_class).attrIf(icon_title <> "", "title", icon_title).Parent
+End Sub
+
+Public Sub ImageAnchor (href As String, img_src As String, img_class As String, img_title As String) As MiniHtml
+	Return Anchor.attrIf(href <> "", "href", href).down(Img).attr("src", img_src).cls(img_class).attrIf(img_title <> "", "title", img_title).Parent
+End Sub
+
+Public Sub FavoriteIcon (icon_type As String, href As String) As MiniHtml
+	Return Link.attr("rel", "icon").attr("type", icon_type).attr("href", href)
+End Sub
+
+Public Sub ButtonClose As MiniHtml
+	Return Button.attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal")
+End Sub
+
+Public Sub ButtonAdd (text As String, cls As String, hx_get As String, hx_target As String, hx_trigger As String, data_bs_target As String, data_bs_toggle As String) As MiniHtml
+	Return Button.cls(cls).attr("hx-get", hx_get).attr("hx-target", hx_target).attr("hx-trigger", hx_trigger).attr("data-bs-target", data_bs_target).attr("data-bs-toggle", data_bs_toggle).down(Icon).cls("bi bi-plus-lg me-2").Parent.text(text)
+End Sub
+
+Public Sub ButtonSubmit (text As String, cls As String) As MiniHtml
+	Return Button.attr("type", "submit").cls(cls).text(text)
+End Sub
+
+Public Sub ButtonCancel (text As String, cls As String) As MiniHtml
+	Return Button.attr("type", "button").cls(cls).attr("data-bs-dismiss", "modal").text(text)
+End Sub
+
+Public Sub ButtonSearch (text As String, cls As String, hx_post As String, hx_target As String) As MiniHtml
+	Return Button.cls(cls).text(text).attr("hx-post", hx_post).attr("hx-target", hx_target).attr("hx-swap", "innerHTML")
+End Sub
+
+Public Sub InputSearch (cls As String, id As String, name As String) As MiniHtml
+	Return Input.attr("type", "text").cls(cls).attr("id", id).attr("name", name)
+End Sub
+
+Public Sub TextLabel (text As String, cls As String, forId As String) As MiniHtml
+	Return Label.attr("for", forId).cls(cls).text(text)
+End Sub
+
+Public Sub FormGroup As MiniHtml
+	Return Div.cls("form-group")
+End Sub
+
+Public Sub InputGroup As MiniHtml
+	Return Div.cls("input-group mb-3")
+End Sub
+
+Public Sub ContainerModal As MiniHtml
+	Return Div.attr("id", "modal-container").cls("modal fade").attr("tabindex", "-1").attr("aria-hidden", "true") _
+	.down(Div.cls("modal-dialog modal-dialog-centered")) _
+	.down(Div.cls("modal-content").attr("id", "modal-content")).Parent.Parent
+End Sub
+
+Public Sub ContainerToast As MiniHtml
+	Return Div.cls("position-fixed end-0 p-3").sty("z-index: 2000").sty("bottom: 0%") _
+	.down(Div.attr("id", "toast-container").cls("toast align-items-center text-bg-success border-0").attr("role", "alert")) _
+	.down(Div.cls("d-flex")) _
+	.down(Div.cls("toast-body").attr("id", "toast-body").text("Operation successful!")).Parent _
+	.down(ButtonClose.cls("btn-close-white me-2 m-auto").attr("data-bs-dismiss", "toast")).Parent.Parent.Parent
+End Sub
+
+Public Sub ContainerModalWithButton (TitleText As String, ParagraphText As String, ButtonText As String) As MiniHtml
+    Return Div.cls("modal-dialog modal-lg modal-dialog-centered") _
+	.down(Div).cls("modal-content") _
+	.down(Div).cls("modal-header") _
+	.down(H5).cls("modal-title").text(TitleText).Parent.Parent _
+	.down(Div).cls("modal-body") _
+	.down(P).text(ParagraphText).Parent.Parent _
+	.down(Div).cls("modal-footer") _
+	.down(Button).attr("type", "button").cls("btn btn-secondary text-uppercase").attr("data-bs-dismiss", "modal").text(ButtonText).Parent.Parent.Parent
+End Sub
+
+Public Sub ModalHeader (text As String) As MiniHtml
+	Return Div.cls("modal-header").down(H5).cls("modal-title").text(text).Parent.down(ButtonClose).Parent
+End Sub
+
+Public Sub ModalBody As MiniHtml
+	Return Div.cls("modal-body")
+End Sub
+
+Public Sub ModalMessage As MiniHtml
+	Return Div.attr("id", "modal-messages")
+End Sub
+
+Public Sub ModalFooter (Submit_text As String, Cancel_text As String, Submit_class As String, Cancel_class As String) As MiniHtml
+	Dim div1 As MiniHtml = Div.cls("modal-footer")
+	ButtonSubmit(Submit_text, "btn btn-" & Submit_class & " px-3").up(div1)
+	ButtonCancel(Cancel_text, "btn btn-" & Cancel_class & " px-3").up(div1)
+	Return div1
+End Sub
+
+Public Sub OptionDisabled (text As String) As MiniHtml
+	Return Option.text(text).attr("value", "").disabled
+End Sub
+
+Public Sub OptionSelected (text As String, value As String, selected As Boolean) As MiniHtml
+	Return Option.text(text).attr("value", value).selectedIf(selected)
+End Sub
+
+Public Sub ResponsiveHeader As MiniHtml
+	Return Head _
+	.down(Meta).attr("charset", "utf-8").Parent _
+	.down(Meta).attr("name", "viewport").attr("content", "width=device-width, initial-scale=1").Parent
+End Sub
+
+Public Sub CopyrightFooter As MiniHtml
+	Return Footer.cls("footer mt-auto py-3 bg-body-tertiary border-top") _
+	.down(Div).cls("footer small text-center d-md-block").sty("font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif") _
+	.down(Caption).text("$APP_COPYRIGHT$") _
+	.down(Br).Parent.text("Made with ") _
+	.down(Span).sty("color: red") _
+	.down(Icon).cls("bi bi-heart").Parent.Parent.text(" in B4X").Parent.Parent
+End Sub
+
+Public Sub SponsorLink As MiniHtml
+	Return Div.cls("text-center font-weight-bold d-none d-lg-block").sty("background-color: whitesmoke").down(Anchor).attr("href", "https://paypal.me/aeric80/").attr("target", "_blank").down(Img).attr("src", "/assets/img/sponsor.png").cls("mx-2").sty("width: 174px").Parent.Parent
+End Sub
+
+Public Sub GitHubLink As MiniHtml
+	Return Div.cls("text-center mb-3") _
+	.down(Anchor).attr("href", "https://github.com/pyhoon").attr("aria-label", "github").attr("title", "GitHub").attr("target", "_blank") _
+	.down(Svg).attr("aria-hidden", "true").attr("width", "24").attr("height", "24").attr("version", "1.1").attr("viewBox", "0 0 16 16") _
+	.down(Path).attr("fill-rule", "evenodd").attr("d", "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z").Parent.Parent.Parent
 End Sub
 
 ' ============================
@@ -645,331 +605,15 @@ Public Sub CreateToastInfo (Entity As String, Action As String, Message As Strin
 End Sub
 
 Public Sub Alert (info As AlertInfo) As String
-	Dim div1 As MiniHtml = Div
-	div1.cls("alert alert-" & info.Status)
-	div1.text(info.Message)
-	Return div1.build
+	Return Div.cls("alert alert-" & info.Status).text(info.Message).build
 End Sub
 
 Public Sub Toast (id As String, table1 As MiniHtml, info As ToastInfo) As String
-	Dim div1 As MiniHtml = Div
-	div1.attr("id", id)
-	div1.attr("hx-swap-oob", "true")
-	table1.up(div1)
-	Dim script1 As MiniJs
-	script1.Initialize
-	script1.AddCustomEventDispatch("entity:changed", _
-	CreateMap( _
-	"entity": info.Entity, _
-	"action": info.Action, _
-	"message": info.Message, _
-	"status": info.Status))
-	Return div1.build & CRLF & script1.Generate
+	Return Div.attr("id", id).attr("hx-swap-oob", "true").add(table1).build & CRLF & CreateCustomEventScript(info).Generate
 End Sub
 
-Public Sub NavLinkItem (text As String, href As String, icon_cls As String, icon_title As String) As MiniHtml
-	Dim li1 As MiniHtml = Li
-	li1.cls("nav-item d-block d-lg-block")
-	Dim a1 As MiniHtml = Anchor.up(li1)
-	a1.attr("href", href)
-	a1.cls("nav-link float-end")
-	a1.text(text)
-	If icon_cls <> "" Then
-		Dim i1 As MiniHtml = Icon.up(a1)
-		i1.cls(icon_cls)
-		i1.attr("title", icon_title)
-	End If
-	Return li1
-End Sub
-
-Public Sub NavLinkItemImage (href As String, img_src As String, img_title As String) As MiniHtml
-	Dim li1 As MiniHtml = Li
-	li1.cls("nav-item d-block d-lg-none")
-	Dim a1 As MiniHtml = Anchor.up(li1)
-	a1.cls("nav-link float-end")
-	a1.attr("href", href)
-	a1.attr("target", "_blank")
-	Dim img1 As MiniHtml = Img.up(a1)
-	img1.attr("src", img_src)
-	img1.cls("my-1")
-	img1.sty("height: 36px")
-	If img_title <> "" Then
-		img1.attr("title", img_title)
-	End If
-	Return li1
-End Sub
-
-' (deprecated)
-Public Sub AnchorIcon (cls As String, hx_get As String, title_text As String, icon_class As String) As MiniHtml
-	Dim a1 As MiniHtml = Anchor
-	a1.cls(cls)
-	a1.attr("hx-get", hx_get)
-	a1.attr("hx-target", "#modal-content")
-	a1.attr("hx-trigger", "click")
-	a1.attr("data-bs-target", "#modal-container")
-	a1.attr("data-bs-toggle", "modal")
-	Icon.up(a1).cls(icon_class)
-	a1.attr("title", title_text)
-	Return a1
-End Sub
-
-Public Sub IconAnchor (cls As String, href As String, icon_class As String, icon_title As String) As MiniHtml
-	Dim a1 As MiniHtml = Anchor.cls(cls)
-	If href <> "" Then a1.attr("href", href)
-	Dim i1 As MiniHtml = Icon.up(a1).cls(icon_class)
-	If icon_title <> "" Then i1.attr("title", icon_title)
-	Return a1
-End Sub
-
-Public Sub ImageAnchor (href As String, img_src As String, img_class As String, img_title As String) As MiniHtml
-	Dim a1 As MiniHtml = Anchor
-	If href <> "" Then a1.attr("href", href)
-	Dim img1 As MiniHtml = Img.up(a1)
-	img1.attr("src", img_src)
-	img1.cls(img_class)
-	If img_title <> "" Then img1.attr("title", img_title)
-	Return a1
-End Sub
-
-Public Sub FavoriteIcon (icon_type As String, href As String) As MiniHtml
-	Dim link1 As MiniHtml = Link
-	link1.attr("rel", "icon")
-	link1.attr("type", icon_type)
-	link1.attr("href", href)
-	Return link1
-End Sub
-
-Public Sub ButtonClose As MiniHtml
-	Dim button1 As MiniHtml = Button
-	button1.attr("type", "button")
-	button1.cls("btn-close")
-	button1.attr("data-bs-dismiss", "modal")
-	Return button1
-End Sub
-
-Public Sub ButtonAdd (text As String, cls As String, hx_get As String, hx_target As String, hx_trigger As String, data_bs_target As String, data_bs_toggle As String) As MiniHtml
-	Dim button1 As MiniHtml = Button
-	button1.cls(cls)
-	button1.attr("hx-get", hx_get)
-	button1.attr("hx-target", hx_target)
-	button1.attr("hx-trigger", hx_trigger)
-	button1.attr("data-bs-target", data_bs_target)
-	button1.attr("data-bs-toggle", data_bs_toggle)
-	Icon.up(button1).cls("bi bi-plus-lg me-2")
-	button1.text(text)
-	Return button1
-End Sub
-
-Public Sub ButtonSubmit (text As String, cls As String) As MiniHtml
-	Dim button1 As MiniHtml = Button
-	button1.attr("type", "submit")
-	button1.cls(cls)
-	button1.text(text)
-	Return button1
-End Sub
-
-Public Sub ButtonCancel (text As String, cls As String) As MiniHtml
-	Dim button1 As MiniHtml = Button
-	button1.attr("type", "button")
-	button1.cls(cls)
-	button1.attr("data-bs-dismiss", "modal")
-	button1.text(text)
-	Return button1
-End Sub
-
-Public Sub ButtonSearch (text As String, cls As String, hx_post As String, hx_target As String) As MiniHtml
-	Dim searchBtn As MiniHtml = Button
-	searchBtn.cls(cls)
-	searchBtn.text(text)
-	searchBtn.attr("hx-post", hx_post)
-	searchBtn.attr("hx-target", hx_target)
-	searchBtn.attr("hx-swap", "innerHTML")
-	Return searchBtn
-End Sub
-
-Public Sub InputSearch (cls As String, id As String, name As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "text")
-	input1.cls(cls)
-	input1.attr("id", id)
-	input1.attr("name", name)
-	Return input1
-End Sub
-
-Public Sub TextLabel (text As String, cls As String, forId As String) As MiniHtml
-	Dim label1 As MiniHtml = Label
-	label1.attr("for", forId)
-	label1.cls(cls)
-	label1.text(text)
-	Return label1
-End Sub
-
-Public Sub FormGroup As MiniHtml
-	Return Div.cls("form-group")
-End Sub
-
-Public Sub InputGroup As MiniHtml
-	Return Div.cls("input-group mb-3")
-End Sub
-
-Public Sub HiddenInput (id As String, name As String, value As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "hidden")
-	If id <> "" Then input1.attr("id", id)
-	If name <> "" Then input1.attr("name", name)
-	If value <> "" Then input1.attr("value", value)
-	Return input1
-End Sub
-
-Public Sub RequiredLabel (text As String, forId As String) As MiniHtml
-	Dim label1 As MiniHtml = Label
-	If forId <> "" Then label1.attr("for", forId)
-	label1.text(text)
-	Span.up(label1).cls("text-danger").text("*")
-	Return label1
-End Sub
-
-Public Sub RequiredTextInput (id As String, name As String, value As String) As MiniHtml
-	Dim input1 As MiniHtml = Input
-	input1.attr("type", "text")
-	input1.cls("form-control")
-	AddAttr(input1, "id", id)
-	AddAttr(input1, "name", name)
-	AddAttr(input1, "value", value)
-	input1.required
-	Return input1
-End Sub
-
-Public Sub RequiredDropdown (id As String, name As String) As MiniHtml
-	Dim select1 As MiniHtml = SelectTag
-	select1.cls("form-select")
-	select1.attr("id", id)
-	select1.attr("name", name)
-	select1.required
-	Return select1
-End Sub
-
-Public Sub ContainerModal As MiniHtml
-	Dim modal1 As MiniHtml = Div
-	modal1.attr("id", "modal-container")
-	modal1.cls("modal fade")
-	modal1.attr("tabindex", "-1")
-	modal1.attr("aria-hidden", "true")
-	Dim dialog1 As MiniHtml = Div.up(modal1)
-	dialog1.cls("modal-dialog modal-dialog-centered")
-	Dim content1 As MiniHtml = Div.up(dialog1)
-	content1.cls("modal-content")
-	content1.attr("id", "modal-content")
-	Return modal1
-End Sub
-
-Public Sub ContainerModalWithButton (TitleText As String, ParagraphText As String, ButtonText As String) As MiniHtml
-    Dim div1 As MiniHtml = Div
-    div1.cls("modal-dialog modal-lg modal-dialog-centered")
-    Dim div2 As MiniHtml = Div.up(div1)
-    div2.cls("modal-content")
-    Dim div3 As MiniHtml = Div.up(div2)
-    div3.cls("modal-header")
-    Dim h51 As MiniHtml = H5.up(div3)
-    h51.cls("modal-title")
-    h51.text(TitleText)
-    Dim div4 As MiniHtml = Div.up(div2)
-    div4.cls("modal-body")
-    Dim p1 As MiniHtml = P.up(div4)
-    p1.text(ParagraphText)
-    Dim div5 As MiniHtml = Div.up(div2)
-    div5.cls("modal-footer")
-    Dim button1 As MiniHtml = Button.up(div5)
-    button1.attr("type", "button")
-    button1.cls("btn btn-secondary text-uppercase")
-    button1.attr("data-bs-dismiss", "modal")
-    button1.text(ButtonText)
-    Return div1
-End Sub
-
-Public Sub ContainerToast As MiniHtml
-	Dim div1 As MiniHtml = Div
-	div1.cls("position-fixed end-0 p-3")
-	div1.sty("z-index: 2000")
-	div1.sty("bottom: 0%")
-	Dim toast1 As MiniHtml = Div.up(div1)
-	toast1.attr("id", "toast-container")
-	toast1.cls("toast align-items-center text-bg-success border-0")
-	toast1.attr("role", "alert")
-	Dim div2 As MiniHtml = Div.up(toast1)
-	div2.cls("d-flex")
-	Dim div3 As MiniHtml = Div.up(div2)
-	div3.cls("toast-body")
-	div3.attr("id", "toast-body")
-	div3.text("Operation successful!")
-	ButtonClose.up(div2).cls("btn-close-white me-2 m-auto").attr("data-bs-dismiss", "toast")
-	Return div1
-End Sub
-
-Public Sub OptionDisabled (text As String) As MiniHtml
-	Dim option1 As MiniHtml = Option
-	option1.attr("value", "")
-	option1.text(text)
-	option1.disabled
-	Return option1
-End Sub
-
-Public Sub ResponsiveHeader As MiniHtml
-	Dim head1 As MiniHtml = Head
-	Meta.up(head1).attr("charset", "utf-8")
-	Meta.up(head1).attr("name", "viewport").attr("content", "width=device-width, initial-scale=1")
-	Return head1
-End Sub
-
-Public Sub CopyrightFooter As MiniHtml
-	Dim footer1 As MiniHtml = Footer
-	footer1.cls("footer mt-auto py-3 bg-body-tertiary border-top")
-	Dim small1 As MiniHtml = Div.up(footer1)
-	small1.cls("footer small text-center d-md-block")
-	small1.sty("font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
-	Dim caption1 As MiniHtml = Caption.up(small1)
-	caption1.text("$APP_COPYRIGHT$")
-	Br.up(caption1)
-	caption1.text("Made with ")
-	Dim span1 As MiniHtml = Span.up(caption1)
-	span1.sty("color: red")
-	Icon.up(span1).cls("bi bi-heart")
-	caption1.text(" in B4X")
-	Return footer1
-End Sub
-
-Public Sub SponsorLink As MiniHtml
-	Dim div1 As MiniHtml = Div
-	div1.cls("text-center font-weight-bold d-none d-lg-block")
-	div1.sty("background-color: whitesmoke")
-	Dim a1 As MiniHtml = Anchor.up(div1)
-	a1.attr("href", "https://paypal.me/aeric80/")
-	a1.attr("target", "_blank")
-	Dim img2 As MiniHtml = Img.up(a1)
-	img2.attr("src", "/assets/img/sponsor.png")
-	img2.cls("mx-2")
-	img2.sty("width: 174px")
-	Return div1
-End Sub
-
-Public Sub GitHubLink As MiniHtml
-	Dim div1 As MiniHtml = Div.cls("text-center mb-3")
-	Dim a1 As MiniHtml = Anchor.up(div1)
-	a1.attr("href", "https://github.com/pyhoon/empress-b4j")
-	a1.cls("text-primary mr-1")
-	a1.attr("aria-label", "github").attr("title", "GitHub").attr("target", "_blank")
-	Dim s1 As MiniHtml = Svg.up(a1)
-	s1.attr("aria-hidden", "true")
-	s1.attr("width", "24").attr("height", "24")
-	s1.attr("version", "1.1")
-	s1.attr("viewBox", "0 0 16 16")
-	Dim p1 As MiniHtml = Path.up(s1)
-	p1.attr("fill-rule", "evenodd")
-	p1.attr("d", "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z")
-	Dim a2 As MiniHtml = Anchor.up(div1)
-	a2.attr("href", "https://github.com/pyhoon")
-	a2.sty("text-decoration: none")
-	a2.attr("target", "_blank")
-	Span.sty("vertical-align: middle").text("GitHub").up(a2)
-	Return div1
+Public Sub CreateCustomEventScript (info As ToastInfo) As MiniJs
+	Dim s As MiniJs = CreateMiniJs
+	s.AddCustomEventDispatch("entity:changed", CreateMap("entity": info.Entity, "action": info.Action, "message": info.Message, "status": info.Status))
+	Return s
 End Sub
