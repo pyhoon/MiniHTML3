@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=10.3
 @EndOfDesignText@
+'Template use for generating MainView.b4x_excluded Class Templates
 ' Main View
 ' Version: 3.20
 Sub Class_Globals
