@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=10.5
 @EndOfDesignText@
+'Template use for generating View.txt Code Snippets
 Sub Class_Globals
 ' MiniHtml View class
 ' Version 3.20
