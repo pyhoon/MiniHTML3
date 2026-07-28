@@ -367,6 +367,28 @@ MIT License. See [LICENSE](LICENSE).
 
 ## Changelog
 
+### v3.20
+
+**New MiniHtml.bas Methods:**
+- `attrs(keyvals)` — Set multiple attributes from map (replaces deprecated `attr2`)
+- `bool(key)` — Generic boolean attribute (replaces deprecated `attr3`)
+- `attrIf(condition, key, value)` / `attrIfValue(key, value)` — Conditional attributes
+- `attrsIfConditions(keyconditions, keyvals)` / `attrsIfValues(keyvals)` — Conditional attr maps
+- `boolIf(condition, key)` — Conditional boolean attribute
+- `textIf(condition, value)` / `textIfValue(value)` — Conditional text
+- `addClassIf(condition, value)` / `clsIf(condition, value)` — Conditional class
+- `clsIIf(condition, valTrue, valFalse)` — Ternary class conditional
+- `uniline` / `multiline` — Fluent mode setters
+
+**New Helper.bas / MH.bas:**
+- `CreateMiniJs`, `ConvertFromBytes`, `ConvertToBytes`, `HiddenInput`, `RequiredLabel`, `RequiredTextInput`, `RequiredDropdown`, `OptionSelected`, `ModalHeader`, `ModalBody`, `ModalMessage`, `ModalFooter`, `CreateCustomEventScript`
+- All components refactored to fluent chaining with `.Parent`
+- `NavbarExpand` signature changed (now takes `brand_icon_cls` and `brand_text`)
+
+**Bug Fixes:**
+- `AddStyle` fixed
+- Code Snippets fixed (Helper.txt, Model.txt, View.txt)
+
 ### v3.11
 
 **New:**
@@ -396,7 +418,6 @@ MIT License. See [LICENSE](LICENSE).
 - Updated Cache module — `ConvertToMiniHtml` renamed to `ConvertToBytes`
 - Updated Helper module
 - Updated Navbar methods
-- Updated all module version strings to 3.10
 - Code refactoring across multiple modules
 
 ## Links
