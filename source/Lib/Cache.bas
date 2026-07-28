@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=StaticCode
 Version=10.5
 @EndOfDesignText@
+'Code same as MC to use for generating Helper.txt Code Snippets
 Sub Process_Globals
 'MiniHtml Cache
 'Version: 3.20
