@@ -5,7 +5,7 @@ Type=StaticCode
 Version=10.5
 @EndOfDesignText@
 Sub Process_Globals
-'MiniHtml Cache
+'MiniHtml Cache class (not incuded in the MiniHtml library)
 'Version: 3.20
 End Sub
 
