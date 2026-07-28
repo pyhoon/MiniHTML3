@@ -465,14 +465,14 @@ End Sub
 Public Sub comment (value As String)
 	Dim child1 As MiniHtml = Create(mNoTag)
 	child1.Indentation = True
-	child1.text($"<!--${value}-->"$)
+	child1.text($"<!--${value.Replace("--", "")}-->"$)
 	mChildren.Add(child1)
 End Sub
 
 'Add a comment with no indent
 Public Sub comment2 (value As String, newline As Boolean)
 	If newline Then linebreak
-	text($"<!--${value}-->"$)
+	text($"<!--${value.Replace("--", "")}-->"$)
 End Sub
 
 '<code>head1.cdn("css", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css")</code>
