@@ -367,6 +367,11 @@ MIT License. See [LICENSE](LICENSE).
 
 ## Changelog
 
+### v3.31
+
+**Bug Fix:**
+- Uniline tags no longer get extra line break before closing tag (regression in v3.30). Fixed `buildImpl` condition from `If mFlat = False` to `If mFlat = False And mMode = mMultiline`.
+
 ### v3.30
 
 **Rendering Overhaul (MiniHtml.bas):**
