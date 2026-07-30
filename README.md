@@ -374,6 +374,33 @@ MIT License. See [LICENSE](LICENSE).
 
 ## Changelog
 
+### v3.30
+
+**Rendering Overhaul (MiniHtml.bas):**
+- DOCTYPE: `"doctype"` case removed from `Initialize`; new `setDocType(value)`/`getDocType`; auto-prepended in `buildImpl`
+- Self-closing: `img`, `br`, `path` use `mMeta`; `mSelf` renders `/>`; tags ending with `/` auto-detect
+- Indentation: removed `SpecialTags`; `setFlat` auto-syncs `LineFeed` and `Indentation`
+- `<div>` added to uniline defaults
+- `attrIf`/`boolIf`/`textIf` now use `If` blocks (no more `IIf`)
+- `comment2` sanitizes `--`; `cdn` uses `add2` instead of deprecated `.up(Me)`
+
+**Parser (MiniHtmlParser.bas):**
+- Text nodes renamed from `"text"` to `""`; DOCTYPE capture; script `src` skips raw parsing
+- Boolean attr regex simplified
+
+**Index.bas:**
+- Removed old `doc.Initialize("doctype")` pattern; uses `IndexPage.build` directly
+- Nav lookup changed to `ChildByClass("navbar-nav")`
+
+**Template Simplification (View.bas):**
+- New `CreateOrReadFromCache` unified caching
+- Modals rewritten with `FormHxPost/Put/Delete`, `ModalHeader/Body/Message/Footer`, `RequiredLabel/TextInput/Dropdown`, `HiddenInput`
+- `ContainerContent` uses `ButtonAdd`, `ButtonSearch`, `ContainerHxGet`, `Row`/`Col`
+- Table simplified; removed `ContainerModal`/`ContainerToast`/`GitHubLink` (use MH directly)
+
+**MainView.bas:**
+- Uses `NavbarExpand` new signature; `cdn()` replaced with direct `Script/Link` attrs
+
 ### v3.20
 
 **New MiniHtml.bas Methods:**
