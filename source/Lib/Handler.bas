@@ -7,7 +7,7 @@ Version=10.5
 'Template use for generating Handler.txt Code Snippets
 Sub Class_Globals
 ' MiniHtml Handler class
-' Version 3.20
+' Version 3.30
 	Private App As EndsMeet
 	Private Path As String
 	Private Method As String

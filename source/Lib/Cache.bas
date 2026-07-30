@@ -7,7 +7,7 @@ Version=10.5
 'Code same as MC to use for generating Helper.txt Code Snippets
 Sub Process_Globals
 'MiniHtml Cache
-'Version: 3.20
+'Version: 3.30
 End Sub
 
 Private Sub EmptyTag As MiniHtml

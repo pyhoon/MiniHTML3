@@ -7,7 +7,7 @@ Version=10.5
 'Code same as MH to use for generating Helper.txt Code Snippets
 Sub Process_Globals
 'MiniHtml Helper
-'Version: 3.20
+'Version: 3.30
 	Type AlertInfo (Message As String, Status As String)
 	Type ToastInfo (Entity As String, Action As String, Message As String, Status As String)
 End Sub
@@ -29,8 +29,8 @@ Public Sub ConvertFromBytes (Buffer() As Byte) As MiniHtml
 	Return CreateTag("").Parse(s)
 End Sub
 
-Public Sub ConvertToBytes (Root As MiniHtml) As Byte()
-	Return Root.build.GetBytes("UTF8")
+Public Sub ConvertToBytes (tag As MiniHtml) As Byte()
+	Return tag.build.GetBytes("UTF8")
 End Sub
 
 Public Sub Anchor As MiniHtml
@@ -452,7 +452,7 @@ Public Sub NavLinkItemImage (href As String, img_src As String, img_title As Str
 	.Parent.Parent
 End Sub
 
-' (deprecated)
+'(deprecated)
 Public Sub AnchorIcon (cls As String, hx_get As String, title_text As String, icon_class As String) As MiniHtml
 	Return Anchor.cls(cls).attr("hx-get", hx_get).attr("hx-target", "#modal-content").attr("hx-trigger", "click").attr("data-bs-target", "#modal-container").attr("data-bs-toggle", "modal").down(Icon).cls(icon_class).attr("title", title_text).Parent
 End Sub

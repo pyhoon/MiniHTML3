@@ -6,7 +6,7 @@ Version=10.5
 @EndOfDesignText@
 Sub Process_Globals
 'MiniHtml Cache class (not incuded in the MiniHtml library)
-'Version: 3.20
+'Version: 3.30
 End Sub
 
 Private Sub EmptyTag As MiniHtml
@@ -56,7 +56,7 @@ Public Sub ConvertFromBytes (Buffer() As Byte) As MiniHtml
 	Return EmptyTag.Parse(s)
 End Sub
 
-Public Sub ConvertToBytes As Byte()
-	Dim s As String = EmptyTag.build
+Public Sub ConvertToBytes (tag As MiniHtml) As Byte()
+	Dim s As String = tag.build
 	Return s.GetBytes("UTF8")
 End Sub
