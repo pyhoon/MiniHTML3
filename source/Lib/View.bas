@@ -7,7 +7,7 @@ Version=10.5
 'Template use for generating View.txt Code Snippets
 Sub Class_Globals
 ' MiniHtml View class
-' Version 3.30
+' Version 3.31
 	Private App As EndsMeet$end$
 End Sub
 

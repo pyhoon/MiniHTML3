@@ -6,7 +6,7 @@ Version=10.5
 'Template use for generating Model.txt Code Snippets
 Sub Class_Globals
 ' MiniHtml Model class
-' Version 3.30
+' Version 3.31
 	Private DB As MiniORM$end$
 	Type $Endpoints$ (category_id As Int, $endpoints$_code As String, $endpoints$_name As String, $endpoints$_price As Double)	
 End Sub

@@ -7,7 +7,7 @@ Version=10.5
 'Template use for generating Boilerplate.txt Code Snippets
 Sub Class_Globals
 ' MiniHtml Boilerplate class
-' Version: 3.30
+' Version: 3.31
 End Sub
 
 Public Sub Initialize

@@ -6,7 +6,7 @@ Version=10.3
 @EndOfDesignText@
 'Template use for generating MainView.b4x_excluded Class Templates
 ' Main View
-' Version: 3.30
+' Version: 3.31
 Sub Class_Globals
 	Private mModal, mToast, mContent, mSubContent As MiniHtml
 End Sub

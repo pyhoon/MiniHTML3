@@ -6,7 +6,7 @@ Version=10.5
 @EndOfDesignText@
 Sub Process_Globals
 'MiniHtml Cache class (not incuded in the MiniHtml library)
-'Version: 3.30
+'Version: 3.31
 End Sub
 
 Private Sub EmptyTag As MiniHtml
