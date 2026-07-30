@@ -29,8 +29,6 @@ Sub Class_Globals
 	Private Const mSelf As String = "self" ' <tag />
 	Private Const mUniline As String = "uniline" ' <tag></tag>
 	Private Const mMultiline As String = "multiline" ' <tag> CRLF </tag> (if mFlat = False)
-	'Public SpecialTags As List = Array As String("doctype", "html", "head", "body", "") 'these tags are not indented by default
-	'Private mSpecialTags As List
 End Sub
 
 ' Initial with tag name
@@ -47,13 +45,6 @@ Public Sub Initialize (Name As String)
 	mDocType = "html"
 	mName = Name
 	Select mName.ToLowerCase
-		Case "doctype"
-			'Append("<!DOCTYPE html>")
-			text("<!DOCTYPE html>")
-			'mName = ""
-			mMode = mNoTag
-			mLineFeed = False
-			'Return
 		Case "head", "form", "table"
 			mMode = mMultiline
 		Case "meta", "input", "link"
