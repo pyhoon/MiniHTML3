@@ -74,21 +74,14 @@ MiniHTML3/
 
 ```b4x
 ' Build a simple HTML page
-Dim doc As MiniHtml
-doc.Initialize("doctype")
-doc.Append(GeneratePage)
-Return doc.ToString
-
-Sub GeneratePage As String
-    Dim html1 As MiniHtml = MH.Html
-    Dim head1 As MiniHtml = MH.Head.up(html1)
-    Dim title1 As MiniHtml = MH.Title.up(head1)
-    title1.text("Hello")
-    Dim body1 As MiniHtml = MH.Body.up(html1)
-    Dim div1 As MiniHtml = MH.Div.up(body1)
-    div1.cls("container").text("Hello World!")
-    Return html1.build
-End Sub
+Dim html1 As MiniHtml = MH.Html
+Dim head1 As MiniHtml = MH.Head.up(html1)
+Dim title1 As MiniHtml = MH.Title.up(head1)
+title1.text("Hello")
+Dim body1 As MiniHtml = MH.Body.up(html1)
+Dim div1 As MiniHtml = MH.Div.up(body1)
+div1.cls("container").text("Hello World!")
+File.WriteString(File.DirApp, "index.html", html1.build)
 ```
 
 ## API Reference
