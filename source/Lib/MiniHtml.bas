@@ -166,7 +166,7 @@ Public Sub buildImpl (indent As Int, AlignAttribute2 As Boolean) As String
 	Select mMode
 		Case mUniline
 			If mChildren.Size > 0 Then
-				If mFlat = False Then
+				If mFlat = False And mMode = mMultiline Then
 					SB.Append(CRLF) '(experiment)
 					SB.Append(sIndent) '(experiment)
 				End If
